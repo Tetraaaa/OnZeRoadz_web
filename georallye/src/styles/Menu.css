@@ -1,0 +1,42 @@
+.navbar-default {
+    background-color: #5C6BC0 !important;
+    border-radius: 0 !important;
+    border: none;
+}
+
+.navbar-default .navbar-brand {
+    color: white
+}
+
+.navbar-default .navbar-brand:hover{
+    color:black;
+}
+
+.btn-connexion {
+    background-color: #AE4D4E;
+    color: white;
+    padding: 0.5em 1em;
+    font-weight: bold;
+}
+
+.btn-inscription {
+    background-color: white;
+    border: 1px solid #AE4D4E;
+    color: #AE4D4E;
+    font-weight: bold;
+    padding: 0.5em 1em;
+}
+
+.btn-connexion:hover{
+    text-decoration: none;
+    color : black;
+}
+
+.btn-inscription:hover{
+    text-decoration: none;
+    color : black;
+}
+
+
+
+
