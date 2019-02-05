@@ -26,7 +26,10 @@ div#content {
 }
 
 .navbar-default .navbar-brand {
-  color: white
+  color: white;
+  font-family: "Billabong";
+  font-size: 33px;
+  color: #7a1e26;
 }
 
 .navbar-default .navbar-brand:hover{
@@ -51,4 +54,11 @@ div#content {
 
 .navbar-default .navbar-text:hover {
   color:  #333;
+}
+
+@font-face {
+  font-family: 'Billabong';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Billabong'), url('Billabong.woff') format('woff');
 }
