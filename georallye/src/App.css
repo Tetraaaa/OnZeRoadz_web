@@ -18,3 +18,37 @@ div#content {
   background-color: #AE4D4E;
   color: white;
 }
+
+.navbar-default {
+  background-color: #5C6BC0 !important;
+  border-top: 2px solid #AE4D4E;
+  border-radius: 0 !important;
+}
+
+.navbar-default .navbar-brand {
+  color: white
+}
+
+.navbar-default .navbar-brand:hover{
+  color:black;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.navbar-default .navbar-text {
+  margin: 0 auto;
+  text-decoration: underline;
+  display: block;
+  color: white;
+  font-size: 16px;
+}
+
+.navbar-default .navbar-text:hover {
+  color:  #333;
+}
