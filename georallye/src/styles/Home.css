@@ -19,3 +19,10 @@
     margin-left: 30px; 
     margin-top: 25px;
 }
+
+.input-lieu{
+    background-image: url('../img/baseline_search_black_18dp.png');
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-size: 30px;
+}
