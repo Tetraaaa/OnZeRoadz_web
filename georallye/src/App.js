@@ -12,6 +12,7 @@ class App extends Component {
     return (
     <Router>
       <div>
+        {/*TODO : if co alors Menu sinon MenuCo*/}
         {/* <Menu/> */}
         <MenuCo/>
         <Route exact path="/" component={Home}/>

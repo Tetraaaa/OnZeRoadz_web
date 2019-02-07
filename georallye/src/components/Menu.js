@@ -19,7 +19,7 @@ export default class Menu extends Component {
                         <a className="btn-connexion">CONNEXION
                         </a>
                     </NavItem>
-                    <NavItem eventKey={1} href="#">
+                    <NavItem eventKey={2} href="#">
                         <a className="btn-inscription">INSCRIPTION
                         </a>
                     </NavItem>

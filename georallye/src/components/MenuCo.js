@@ -24,12 +24,12 @@ export default class Menu extends Component {
 						</NavItem>
 					</Nav>
 					<Nav pullRight>
-						<NavItem eventKey={1} href="#">
+						<NavItem eventKey={3} href="#">
 							<a className="btn-power">
                                 <Navbar.Text><span style={{ marginRight: 5 }}>Le Poto Rico</span><i className="material-icons">person</i></Navbar.Text>	
 							</a>
 						</NavItem>
-						<NavItem eventKey={2} href="#">
+						<NavItem eventKey={4} href="#">
 							<a className="btn-power">
 								<i className="material-icons">power_settings_new</i>
 							</a>
