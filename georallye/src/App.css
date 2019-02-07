@@ -19,6 +19,12 @@ div#content {
   color: white;
 }
 
+.btn-default:focus{
+  background-color: #AE4D4E;
+  outline-color: transparent;
+  color:white;
+}
+
 .navbar-default {
   background-color: #5C6BC0 !important;
   border-top: 2px solid #AE4D4E;

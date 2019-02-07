@@ -26,3 +26,43 @@
     background-position: 98%;
     background-size: 30px;
 }
+
+.btn-mylocation{
+    background-color: white;
+    border:none;
+    border-radius: 0;
+    z-index : 99;
+    position: absolute;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 93.80%;
+    top: 55%;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-mylocation:hover{
+    background-color:white;
+}
+
+.btn-mylocation:focus{
+    background-color: white;
+    outline-color: transparent;
+}
+
+.btn-mylocation i {
+    color : #666666;
+}
+
+.btn-mylocation i:hover{
+    color : black;
+}
+
+.list-lieu{
+    width: 440px;
+    z-index: 100;
+    position: absolute;
+}
+
