@@ -10,10 +10,10 @@ class Home extends Component {
         lng: 0,
         markers: null,
         predictions: [],
-        lieu: ''
+        lieu: '',
+        focusOnBar: false
     }
 
-    requests = [];
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
@@ -36,18 +36,23 @@ class Home extends Component {
     }
 
     _onSearch = (item) => {
-        console.log(item)
         fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
             item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
                 if (response.ok) {
-                    response.json().then(json => this.setState({ lat: json.result.geometry.location.lat, lng: json.result.geometry.location.lng, lieu: item.description }))
+                    response.json().then(json => this.setState(
+                        {
+                            lat: json.result.geometry.location.lat,
+                            lng: json.result.geometry.location.lng,
+                            lieu: item.description,
+                            focusOnBar: false
+                        }
+                    ))
                 }
             })
             .catch(error => console.log(error))
     }
 
     _onChangeText = (e) => {
-        this.requests.forEach(request => request.abort())
         if (e.target.value.length > 2) {
             fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
                 e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
@@ -60,35 +65,46 @@ class Home extends Component {
         this.handleInputChange(e);
     }
 
-
-
     componentDidMount() {
-        this.location()
+        this.location();
     }
 
     render() {
+        console.log(this.state.focusOnBar)
         return (
             <div className="container-fluid">
                 <Row>
                     <Col xs={7}>
                         <Row>
                             <Col xs={7}>
-                                <FormControl className="input-lieu"
+                                <FormControl
+                                    className="input-lieu"
                                     type="text"
                                     name="lieu"
                                     value={this.state.lieu}
                                     placeholder="Rechercher un lieu"
-                                    onChange={this._onChangeText} />
-                                <ListGroup className="list-lieu">
-                                    {
-                                        this.state.predictions.map((item) => {
-                                            return (
-                                                <ListGroupItem onClick={() => { this._onSearch(item) }}>{item.description}</ListGroupItem>
-                                            )
-                                        }
-                                        )
-                                    }
-                                </ListGroup>
+                                    autoComplete="off"
+                                    onChange={this._onChangeText}
+                                    onBlur={() => { this.setState({ focusOnBar: false }) }}
+                                    onFocus={() => { this.setState({ focusOnBar: true }) }} />
+                                {
+                                    this.state.focusOnBar ?
+                                        <ListGroup className="list-lieu">
+                                            {
+                                                this.state.predictions.map((item) => {
+                                                    return (
+                                                        <ListGroupItem onMouseDown={() => {this._onSearch(item) }}>
+                                                            {item.description}
+                                                        </ListGroupItem>
+                                                    )
+                                                }
+                                                )
+
+                                            }
+                                        </ListGroup>
+                                        :
+                                        null
+                                }
                             </Col>
                             <Col xs={5}>
                                 <Button>Filtrer la recherche</Button>
