@@ -1,0 +1,19 @@
+.container-fluid-circuit{
+    height: 100%;
+}
+
+.btn-sidebar{
+    background-color: white;
+    border:none;
+    border-radius: 2px;
+    z-index : 99;
+    position: absolute;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0.750em;
+    top: 42em;
+    width: 40px;
+    height: 40px;
+}

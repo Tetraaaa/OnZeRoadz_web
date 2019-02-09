@@ -14,8 +14,8 @@ class App extends Component {
       <Router>
         <div>
           {/*TODO : if co alors Menu sinon MenuCo*/}
-          <Menu />
-          {/* <MenuCo /> */}
+          {/* <Menu /> */}
+          <MenuCo />
           <Route exact path="/" component={Home} />
           <Route path="/space" component={Space} />
           <Route path="/circuit" component={Circuit} />

@@ -119,10 +119,10 @@ class Home extends Component {
                                         :
                                         null
                                     }
-                                    <Button className="btn-mylocation" onClick={this.location}>
+                                    
+                                </Map><Button className="btn-mylocation" onClick={this.location}>
                                         <i className="material-icons">my_location</i>
                                     </Button>
-                                </Map>
                             </Col>
                         </Row>
                     </Col>
