@@ -8,13 +8,27 @@
 }
 
 .class-container{
-    height: 300px;
+    height: 275px;
     border: 1px solid black;
-    margin-left: 30px; 
+    margin-left: 30px;
+    margin-top: 20px; 
+}
+
+.class-container-home{
+    height: 330px;
+    border: 1px solid black;
+    margin-left: 30px;
 }
 
 .infos-container{
-    height: 230px;
+    height: 205px;
+    border: 1px solid black;
+    margin-left: 30px; 
+    margin-top: 25px;
+}
+
+.infos-container-home{
+    height: 205px;
     border: 1px solid black;
     margin-left: 30px; 
     margin-top: 25px;
@@ -66,3 +80,23 @@
     position: absolute;
 }
 
+.btn-circuit{
+    width: 200px;
+    float: right;
+}
+
+.btn-filtrer i{
+    vertical-align: middle;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.btn-filtrer span{
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+.lieu-item:hover{
+    cursor: pointer;
+    background-color: #E8E8E8;
+}

@@ -93,7 +93,7 @@ class Home extends Component {
                                             {
                                                 this.state.predictions.map((item) => {
                                                     return (
-                                                        <ListGroupItem onMouseDown={() => {this._onSearch(item) }}>
+                                                        <ListGroupItem className="lieu-item" onMouseDown={() => { this._onSearch(item) }}>
                                                             {item.description}
                                                         </ListGroupItem>
                                                     )
@@ -107,7 +107,7 @@ class Home extends Component {
                                 }
                             </Col>
                             <Col xs={5}>
-                                <Button>Filtrer la recherche</Button>
+                                <Button className="btn-filtrer"><i className="material-icons">tune</i><span>Filtrer la recherche</span></Button>
                             </Col>
                         </Row>
                         <Row>
@@ -129,10 +129,10 @@ class Home extends Component {
 
                     <Col xs={5}>
                         <Row>
-                            <Col className="class-container">CLASSEMENT</Col>
+                            <Col className="class-container-home">CLASSEMENT</Col>
                         </Row>
                         <Row>
-                            <Col className="infos-container">CIRCUIT</Col>
+                            <Col className="infos-container-home">CIRCUIT</Col>
                         </Row>
                     </Col>
                 </Row>
