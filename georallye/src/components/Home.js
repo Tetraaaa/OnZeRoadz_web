@@ -17,6 +17,9 @@ class Home extends Component {
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
+    /** 
+     * Position actuelle
+    */
     location = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             this.setState({
@@ -26,6 +29,9 @@ class Home extends Component {
         })
     }
 
+    /**
+     * Positionner le marker
+     */
     mapClicked = (mapProps, map, clickEvent) => {
         this.setState({
             markers: {
@@ -35,6 +41,9 @@ class Home extends Component {
         })
     }
 
+    /**
+     * Recherche le lieu de la barre de recherche
+     */
     _onSearch = (item) => {
         fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
             item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
@@ -52,6 +61,9 @@ class Home extends Component {
             .catch(error => console.log(error))
     }
 
+    /**
+     * Affiche la liste de suggestion de la barre de recherche
+     */
     _onChangeText = (e) => {
         if (e.target.value.length > 2) {
             fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
@@ -70,7 +82,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log(this.state.focusOnBar)
         return (
             <div className="container-fluid">
                 <Row>
@@ -119,10 +130,10 @@ class Home extends Component {
                                         :
                                         null
                                     }
-                                    
-                                </Map><Button className="btn-mylocation" onClick={this.location}>
-                                        <i className="material-icons">my_location</i>
-                                    </Button>
+                                </Map>
+                                <Button className="btn-mylocation" onClick={this.location}>
+                                    <i className="material-icons">my_location</i>
+                                </Button>
                             </Col>
                         </Row>
                     </Col>

@@ -1,7 +1,3 @@
-.input-lieu{
-    border-radius: 20px;
-}
-
 .map-container{
     height: 450px;
     margin-top: 20px;
@@ -39,6 +35,7 @@
     background-repeat: no-repeat;
     background-position: 98%;
     background-size: 30px;
+    border-radius: 20px;
 }
 
 .map{
