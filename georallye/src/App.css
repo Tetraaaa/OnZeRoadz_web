@@ -41,6 +41,11 @@ div#content {
   color:white;
 }
 
+.btn-default:hover{
+  background-color: #7a1e26;
+  color: white;
+}
+
 .navbar-default {
   background-color: #5C6BC0 !important;
   border-top: 2px solid #AE4D4E;
@@ -78,6 +83,25 @@ div#content {
 .navbar-default .navbar-text:hover {
   color:  #333;
 }
+
+.btn-cancel{
+  width: 100px;
+  color: #AE4D4E;
+  background-color: white;
+  border: 1px solid #AE4D4E;
+}
+
+.btn-cancel:hover{
+  width: 100px;
+  color: #7a1e26;
+  background-color: white;
+  border: 1px solid #7a1e26;
+}
+
+.btn-valid {
+  width: 100px;
+}
+
 
 @font-face {
   font-family: 'Billabong';

@@ -2,24 +2,7 @@
     height: 100%;
 }
 
-.btn-sidebar-list{
-    background-color: white;
-    color: #666666;
-    border:none;
-    border-radius: 2px;
-    z-index : 99;
-    position: absolute;
-    width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 0.750em;
-    top: 42em;
-    width: 40px;
-    height: 40px;
-}
-
-.btn-sidebar-add{
+.btn-list{
     background-color: white;
     color: #666666;
     border:none;
@@ -36,10 +19,81 @@
     height: 40px;
 }
 
+.btn-add{
+    background-color: white;
+    color: #666666;
+    border:none;
+    border-radius: 2px;
+    z-index : 99;
+    position: absolute;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0.750em;
+    top: 36em;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-check{
+    background-color: #AE4D4E;
+    color: white;
+    border:none;
+    border-radius: 2px;
+    z-index : 99;
+    position: absolute;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0.750em;
+    top: 43em;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-check:hover{
+    background-color: #7a1e26;
+    color: white;
+}
+
 .search-bar{
     position: absolute;
     width: 400px;
     z-index : 99;
     left: 15em;
     top: 1em;
+}
+
+.name-step {
+    width: 90%;
+    margin: 15px;
+}
+
+.info-step {
+    width: 90%;
+    height: 200px;
+    margin: 15px;
+}
+
+.div-question {
+    color: #AE4D4E;
+    text-decoration: underline;
+    font-size: 17px;
+    margin: 0 15px;
+    cursor: pointer;
+    text-align: end;
+}
+
+.div-question:hover {
+    color: #7a1e26;
+    font-size: 18px;
+}
+
+.title-step {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: #AE4D4E;
 }

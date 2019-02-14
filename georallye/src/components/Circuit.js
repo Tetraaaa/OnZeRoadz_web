@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import '../App.css';
 import '../styles/Circuit.css';
+import ModalQuestion from './ModalQuestion';
 import Sidebar from "react-sidebar";
-import { Form, Button, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel } from 'react-bootstrap';
 
 class Circuit extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class Circuit extends Component {
       markers: null,
       predictions: [],
       lieu: '',
-      focusOnBar: false
+      focusOnBar: false,
+      modalQuestionShow: false
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
@@ -115,14 +117,28 @@ class Circuit extends Component {
   }
 
   render() {
+    let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
     return (
       <div className="container-fluid-circuit">
         <Sidebar
           sidebar={
             this.state.typeSideBar === 'add' ?
               <Form>
-                <FormControl type="text" name="pseudo" placeholder="Nom de l'étape" />
-                <FormControl type="text" name="pseudo" placeholder="Description de l'étape" />
+                <ControlLabel className="title-step">Etape A</ControlLabel>
+                <FormControl 
+                  className="name-step" 
+                  type="text" 
+                  name="name-step" 
+                  placeholder="Nom de l'étape" />
+                <FormControl 
+                  componentClass="textarea" 
+                  rows="10"
+                  className="info-step" 
+                  name="info-step" 
+                  placeholder="Description de l'étape" />
+                  {/**si déjà une question mettre "afficher la question" */}
+                <div class="div-question"  onClick={() => this.setState({ modalQuestionShow: true })}>Ajouter une question</div>
+                <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
               </Form>
               :
               <span>Ma liste d'étapes</span>
@@ -165,13 +181,19 @@ class Circuit extends Component {
               null
           }
 
-          <Button className="btn-sidebar-add" >
+          <Button className="btn-add" >
             <i className="material-icons">add_location</i>
           </Button>
-          <Button className="btn-sidebar-list" onClick={() => this.onClickList()}>
+          <Button className="btn-list" onClick={() => this.onClickList()}>
             <i className="material-icons">list</i>
           </Button>
-          <Map className="map" google={this.props.google} center={{ lat: this.state.lat, lng: this.state.lng }} zoom={14}>
+          <Button className="btn-check" onClick={() => this.onClickList()}>
+            <i className="material-icons">check</i>
+          </Button>
+          <Map className="map" 
+            google={this.props.google} 
+            center={{ lat: this.state.lat, lng: this.state.lng }} 
+            zoom={14}>
             <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={() => this.onClickAdd()} />
           </Map>
         </Sidebar>

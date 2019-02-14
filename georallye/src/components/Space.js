@@ -129,7 +129,7 @@ class Space extends Component {
 
                     <Col xs={5}>
                         <Row>
-                            <Button className="btn-circuit">Créer un circuit</Button>
+                            <Button className="btn-circuit" href="/circuit">Créer un circuit</Button>
                         </Row>
                         <Row>
                             <Col className="class-container">CLASSEMENT</Col>
