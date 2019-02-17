@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
 import '../App.css';
 import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
@@ -12,14 +12,15 @@ class Circuit extends Component {
     this.state = {
       lat: 0,
       lng: 0,
-      markers: null,
+      marker: null,
       sidebarOpen: false,
       typeSideBar: '',
-      markers: null,
+      markers: [],
       predictions: [],
       lieu: '',
       focusOnBar: false,
-      modalQuestionShow: false
+      modalQuestionShow: false,
+      id: 0
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
@@ -43,11 +44,15 @@ class Circuit extends Component {
    */
   mapClicked = (mapProps, map, clickEvent) => {
     this.setState({
-      markers: {
+      id: this.state.id + 1,
+      marker: {
+        id: this.state.id,
         lat: clickEvent.latLng.lat(),
         lng: clickEvent.latLng.lng()
       }
-    })
+    });
+    this.setState(() => { markers: this.state.markers.push(this.state.marker)});
+   this.onLine();
   }
 
   /**
@@ -112,12 +117,27 @@ class Circuit extends Component {
     this.setState({ typeSideBar: 'list' })
   }
 
+  /**
+   * dessin tracé
+   */
+  onLine() {
+    console.log('ok')
+    return (
+      <Polyline
+      paths={this.state.markers}
+      strokeColor="#0000FF"
+      strokeOpacity={0.8}
+      strokeWeight={2} />
+    )
+  }
+
   componentDidMount() {
     this.location();
   }
 
   render() {
     let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
+    
     return (
       <div className="container-fluid-circuit">
         <Sidebar
@@ -197,8 +217,19 @@ class Circuit extends Component {
           <Map className="map"
             google={this.props.google}
             center={{ lat: this.state.lat, lng: this.state.lng }}
-            zoom={14}>
+            zoom={14}
+            onClick={this.mapClicked}>
             <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={() => this.onClickAdd()} />
+            {this.state.markers ?
+              this.state.markers.map((marker) =>  {
+                return (
+                    <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+                  )
+              }
+              )  
+              :
+              null
+            }
           </Map>
         </Sidebar>
 

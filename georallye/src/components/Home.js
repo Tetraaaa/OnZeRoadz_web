@@ -123,7 +123,11 @@ class Home extends Component {
                         </Row>
                         <Row>
                             <Col className="map-container">
-                                <Map className="map" google={this.props.google} center={{ lat: this.state.lat, lng: this.state.lng }} zoom={14} onClick={this.mapClicked}>
+                                <Map className="map" 
+                                google={this.props.google} 
+                                center={{ lat: this.state.lat, lng: this.state.lng }} 
+                                zoom={14} 
+                                onClick={this.mapClicked}>
                                     <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
                                     {this.state.markers ?
                                         <Marker position={{ lat: this.state.markers.lat, lng: this.state.markers.lng }} />
