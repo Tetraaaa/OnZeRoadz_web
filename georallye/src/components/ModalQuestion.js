@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import '../App.css';
 
 class ModalQuestion extends Component {
     render() {
@@ -16,13 +17,13 @@ class ModalQuestion extends Component {
                             <FormControl componentClass="select" name="select-type"/>
                         </FormGroup>
                         <FormGroup>
-                            <FormControl name="question" placeholder="Question" componentClass="textarea" rows="2" />
+                            <FormControl className="textarea" name="question" placeholder="Question" componentClass="textarea" rows="2" />
                         </FormGroup>
                         <FormGroup>
                             <FormControl name="infos" placeholder="Informations complémentaires" type="text" />
                         </FormGroup>
                         <FormGroup>
-                            <FormControl name="reponse" placeholder="Réponse" componentClass="textarea" rows="3" />
+                            <FormControl className="textarea" name="reponse" placeholder="Réponse" componentClass="textarea" rows="3" />
                         </FormGroup>
                         
                     </Form>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup} from 'react-bootstrap';
+import { Modal, Form, Button, FormControl, FormGroup } from 'react-bootstrap';
 
 class ModalConnexion extends Component {
     render() {
@@ -17,11 +17,14 @@ class ModalConnexion extends Component {
                         <FormGroup>
                             <FormControl type="password" name="password" placeholder="Mot de passe" />
                         </FormGroup>
-                        <Button variant="primary" type="submit">
-                            CONNEXION
-                        </Button>
+
                     </Form>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" type="submit">
+                        CONNEXION
+                    </Button>
+                </Modal.Footer>
             </Modal>
         )
     }

@@ -125,19 +125,19 @@ class Circuit extends Component {
             this.state.typeSideBar === 'add' ?
               <Form>
                 <ControlLabel className="title-step">Etape A</ControlLabel>
-                <FormControl 
-                  className="name-step" 
-                  type="text" 
-                  name="name-step" 
+                <FormControl
+                  className="name-step"
+                  type="text"
+                  name="name-step"
                   placeholder="Nom de l'étape" />
-                <FormControl 
-                  componentClass="textarea" 
+                <FormControl
+                  componentClass="textarea"
                   rows="10"
-                  className="info-step" 
-                  name="info-step" 
+                  className="info-step"
+                  name="info-step"
                   placeholder="Description de l'étape" />
-                  {/**si déjà une question mettre "afficher la question" */}
-                <div class="div-question"  onClick={() => this.setState({ modalQuestionShow: true })}>Ajouter une question</div>
+                {/**si déjà une question mettre "afficher la question" */}
+                <div className="div-question" onClick={() => this.setState({ modalQuestionShow: true })}>Ajouter une question</div>
                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
               </Form>
               :
@@ -151,35 +151,36 @@ class Circuit extends Component {
           }}
           pullRight
         >
-
-          <FormControl
-            className="input-lieu search-bar"
-            type="text"
-            name="lieu"
-            value={this.state.lieu}
-            placeholder="Rechercher un lieu"
-            autoComplete="off"
-            onChange={this._onChangeText}
-            onBlur={() => { this.setState({ focusOnBar: false }) }}
-            onFocus={() => { this.setState({ focusOnBar: true }) }} />
-          {
-            this.state.focusOnBar ?
-              <ListGroup className="list-lieu">
-                {
-                  this.state.predictions.map((item) => {
-                    return (
-                      <ListGroupItem className="lieu-item" onMouseDown={() => { this._onSearch(item) }}>
-                        {item.description}
-                      </ListGroupItem>
+          <div className="div-search-bar">
+            <FormControl
+              className="input-lieu search-bar"
+              type="text"
+              name="lieu"
+              value={this.state.lieu}
+              placeholder="Rechercher un lieu"
+              autoComplete="off"
+              onChange={this._onChangeText}
+              onBlur={() => { this.setState({ focusOnBar: false }) }}
+              onFocus={() => { this.setState({ focusOnBar: true }) }} />
+            {
+              this.state.focusOnBar ?
+                <ListGroup className="list-lieu-circuit">
+                  {
+                    this.state.predictions.map((item) => {
+                      return (
+                        <ListGroupItem className="lieu-item-circuit" onMouseDown={() => { this._onSearch(item) }}>
+                          {item.description}
+                        </ListGroupItem>
+                      )
+                    }
                     )
-                  }
-                  )
 
-                }
-              </ListGroup>
-              :
-              null
-          }
+                  }
+                </ListGroup>
+                :
+                null
+            }
+          </div>
 
           <Button className="btn-add" >
             <i className="material-icons">add_location</i>
@@ -190,9 +191,12 @@ class Circuit extends Component {
           <Button className="btn-check" onClick={() => this.onClickList()}>
             <i className="material-icons">check</i>
           </Button>
-          <Map className="map" 
-            google={this.props.google} 
-            center={{ lat: this.state.lat, lng: this.state.lng }} 
+          <Button className="btn-mylocation-circuit" onClick={this.location}>
+            <i className="material-icons">my_location</i>
+          </Button>
+          <Map className="map"
+            google={this.props.google}
+            center={{ lat: this.state.lat, lng: this.state.lng }}
             zoom={14}>
             <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={() => this.onClickAdd()} />
           </Map>

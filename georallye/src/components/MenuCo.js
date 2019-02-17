@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, NavItem, Form, FormControl, Button, Text } from 'react-bootstrap';
+import { Navbar, Nav, NavItem} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../styles/MenuCo.css';
 import '../App.css';
@@ -24,15 +24,11 @@ export default class Menu extends Component {
 						</NavItem>
 					</Nav>
 					<Nav pullRight>
-						<NavItem eventKey={3} href="#">
-							<a className="btn-power">
+						<NavItem className="btn-power" eventKey={3} href="#">
                                 <Navbar.Text><span style={{ marginRight: 5 }}>Le Poto Rico</span><i className="material-icons">person</i></Navbar.Text>	
-							</a>
 						</NavItem>
-						<NavItem eventKey={4} href="#">
-							<a className="btn-power">
+						<NavItem className="btn-power" eventKey={4} href="#">
 								<i className="material-icons">power_settings_new</i>
-							</a>
 						</NavItem>
 					</Nav>
 				</Navbar.Collapse>

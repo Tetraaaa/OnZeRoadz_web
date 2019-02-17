@@ -81,6 +81,11 @@
     position: absolute;
 }
 
+.lieu-item:hover{
+    cursor: pointer;
+    background-color: #E8E8E8;
+}
+
 .btn-circuit{
     width: 200px;
     float: right;
@@ -97,7 +102,3 @@
     font-size: 15px;
 }
 
-.lieu-item:hover{
-    cursor: pointer;
-    background-color: #E8E8E8;
-}

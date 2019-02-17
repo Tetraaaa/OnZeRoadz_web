@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Modal, Form, Button, FormControl, FormGroup } from 'react-bootstrap';
 
 class ModalInscription extends Component {
     render() {
@@ -28,11 +28,14 @@ class ModalInscription extends Component {
                         <FormGroup>
                             <FormControl type="password" name="rePassword" placeholder="Confirmez votre mot de passe" />
                         </FormGroup>
-                        <Button variant="primary" type="submit">
-                            S'INSCRIRE
-                        </Button>
+
                     </Form>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" type="submit">
+                        S'INSCRIRE
+                    </Button>
+                </Modal.Footer>
             </Modal>
         )
     }
