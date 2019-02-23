@@ -142,3 +142,7 @@
     cursor: pointer;
     background-color: #E8E8E8;
 }
+
+.add-marker{
+    cursor: url("../img/baseline_search_black_18dp.png"), pointer !important;
+}

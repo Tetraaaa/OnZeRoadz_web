@@ -20,7 +20,8 @@ class Circuit extends Component {
       lieu: '',
       focusOnBar: false,
       modalQuestionShow: false,
-      id: 0
+      id: 1,
+      addMarkerActive: false
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
@@ -44,6 +45,7 @@ class Circuit extends Component {
    */
   mapClicked = (mapProps, map, clickEvent) => {
     this.setState({
+      sidebarOpen: false,
       id: this.state.id + 1,
       marker: {
         id: this.state.id,
@@ -105,8 +107,15 @@ class Circuit extends Component {
    * SideBar Add
    */
   onClickAdd() {
+    this.setState({addMarkerActive: true, sidebarOpen: false })
+  }
+
+  /**
+   * SideBar Add
+   */
+  onClickMarker() {
     this.onSetSidebarOpen();
-    this.setState({ typeSideBar: 'add' })
+    this.setState({ typeSideBar: 'add'})
   }
 
   /**
@@ -161,7 +170,19 @@ class Circuit extends Component {
                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
               </Form>
               :
-              <span>Ma liste d'étapes</span>
+              <Form>
+                <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
+                {this.state.markers ?
+                this.state.markers.map((marker) =>  {
+                  return (
+                      <div> {marker.id} </div>
+                    )
+                }
+                )  
+                :
+                null
+              }
+              </Form>
           }
           docked={this.state.sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
@@ -202,7 +223,7 @@ class Circuit extends Component {
             }
           </div>
 
-          <Button className="btn-add" >
+          <Button className="btn-add" onClick={() => this.onClickAdd()}>
             <i className="material-icons">add_location</i>
           </Button>
           <Button className="btn-list" onClick={() => this.onClickList()}>
@@ -214,16 +235,20 @@ class Circuit extends Component {
           <Button className="btn-mylocation-circuit" onClick={this.location}>
             <i className="material-icons">my_location</i>
           </Button>
-          <Map className="map"
+          <Map className={this.state.addMarkerActive ? "map add-marker" : "map"}
             google={this.props.google}
             center={{ lat: this.state.lat, lng: this.state.lng }}
             zoom={14}
-            onClick={this.mapClicked}>
-            <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={() => this.onClickAdd()} />
+            onClick={this.state.addMarkerActive ?
+                        this.mapClicked
+                        :
+                        null
+                    }>
+            <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
             {this.state.markers ?
               this.state.markers.map((marker) =>  {
                 return (
-                    <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+                    <Marker position={{ lat: marker.lat, lng: marker.lng }} onClick={() => this.onClickMarker()} />
                   )
               }
               )  
