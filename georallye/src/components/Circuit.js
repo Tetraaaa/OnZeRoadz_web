@@ -48,13 +48,12 @@ class Circuit extends Component {
       sidebarOpen: false,
       id: this.state.id + 1,
       marker: {
-        id: this.state.id,
-        lat: clickEvent.latLng.lat(),
-        lng: clickEvent.latLng.lng()
-      }
+        lat: Number(clickEvent.latLng.lat().toFixed(3)),
+        lng: Number(clickEvent.latLng.lng().toFixed(3))
+      },
+      markers: this.state.markers.concat([this.state.marker])
     });
-    this.setState(() => { markers: this.state.markers.push(this.state.marker)});
-   this.onLine();
+    //this.setState(() => { markers: this.state.markers.push(this.state.marker) });
   }
 
   /**
@@ -107,7 +106,7 @@ class Circuit extends Component {
    * SideBar Add
    */
   onClickAdd() {
-    this.setState({addMarkerActive: true, sidebarOpen: false })
+    this.setState({ addMarkerActive: true, sidebarOpen: false })
   }
 
   /**
@@ -115,7 +114,7 @@ class Circuit extends Component {
    */
   onClickMarker() {
     this.onSetSidebarOpen();
-    this.setState({ typeSideBar: 'add'})
+    this.setState({ typeSideBar: 'marker' })
   }
 
   /**
@@ -126,32 +125,17 @@ class Circuit extends Component {
     this.setState({ typeSideBar: 'list' })
   }
 
-  /**
-   * dessin tracé
-   */
-  onLine() {
-    console.log('ok')
-    return (
-      <Polyline
-      paths={this.state.markers}
-      strokeColor="#0000FF"
-      strokeOpacity={0.8}
-      strokeWeight={2} />
-    )
-  }
-
   componentDidMount() {
     this.location();
   }
 
   render() {
     let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
-    
     return (
       <div className="container-fluid-circuit">
         <Sidebar
           sidebar={
-            this.state.typeSideBar === 'add' ?
+            this.state.typeSideBar === 'marker' ?
               <Form>
                 <ControlLabel className="title-step">Etape A</ControlLabel>
                 <FormControl
@@ -165,7 +149,7 @@ class Circuit extends Component {
                   className="info-step"
                   name="info-step"
                   placeholder="Description de l'étape" />
-                {/**si déjà une question mettre "afficher la question" */}
+                {/**TODO :si déjà une question mettre "afficher la question" */}
                 <div className="div-question" onClick={() => this.setState({ modalQuestionShow: true })}>Ajouter une question</div>
                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
               </Form>
@@ -173,15 +157,15 @@ class Circuit extends Component {
               <Form>
                 <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
                 {this.state.markers ?
-                this.state.markers.map((marker) =>  {
-                  return (
-                      <div> {marker.id} </div>
+                  this.state.markers.map((marker) => {
+                    return (
+                      <div> </div>
                     )
+                  }
+                  )
+                  :
+                  null
                 }
-                )  
-                :
-                null
-              }
               </Form>
           }
           docked={this.state.sidebarOpen}
@@ -240,21 +224,33 @@ class Circuit extends Component {
             center={{ lat: this.state.lat, lng: this.state.lng }}
             zoom={14}
             onClick={this.state.addMarkerActive ?
-                        this.mapClicked
-                        :
-                        null
-                    }>
-            <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
-            {this.state.markers ?
-              this.state.markers.map((marker) =>  {
+              this.mapClicked
+              :
+              null
+            }>
+            <Marker position={{ lat: this.state.lat, lng: this.state.lng }} icon={{
+              url: require("../img/my_location.svg"),
+              scaledSize: new this.props.google.maps.Size(40, 40)
+            }} />
+            { this.state.markers.length > 0 ?
+              this.state.markers.map((marker) => {
                 return (
-                    <Marker position={{ lat: marker.lat, lng: marker.lng }} onClick={() => this.onClickMarker()} />
-                  )
+                  <Marker position={{ lat: marker.lat, lng: marker.lng }} onClick={() => this.onClickMarker()} />
+                )
               }
-              )  
+              )
               :
               null
             }
+            <Polyline
+              fillColor="#0000FF"
+              fillOpacity={0.35}
+              path={this.state.markers}
+              strokeColor="#0000FF"
+              strokeOpacity={0.8}
+              strokeWeight={2}
+            />
+
           </Map>
         </Sidebar>
 
