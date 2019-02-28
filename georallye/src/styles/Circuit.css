@@ -36,6 +36,33 @@
     height: 40px;
 }
 
+.btn-add:focus{
+    background-color: white;
+    color: #666666;
+}
+
+.btn-add-active{
+    background-color: white;
+    color: #AE4D4E;
+    border:none;
+    border-radius: 2px;
+    z-index : 99;
+    position: absolute;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0.750em;
+    top: 36em;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-add-active:focus{
+    background-color: white;
+    color: #666666;
+}
+
 .btn-check{
     background-color: #AE4D4E;
     color: white;

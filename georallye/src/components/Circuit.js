@@ -107,7 +107,7 @@ class Circuit extends Component {
      * SideBar Add
      */
     onClickAdd = () => {
-        this.setState({ addMarkerActive: true, sidebarOpen: false })
+        this.setState({ addMarkerActive: !this.state.addMarkerActive, sidebarOpen: false })
     }
 
     /**
@@ -226,7 +226,7 @@ class Circuit extends Component {
                         }
                     </div>
 
-                    <Button className="btn-add" onClick={this.onClickAdd}>
+                    <Button className={this.state.addMarkerActive ? "btn-add-active" : "btn-add"} onClick={this.onClickAdd}>
                         <i className="material-icons">add_location</i>
                     </Button>
                     <Button className="btn-list" onClick={this.onClickList}>
