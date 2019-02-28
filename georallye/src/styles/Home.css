@@ -40,7 +40,6 @@
 
 .map{
     position: relative;
-    cursor: url("../img/baseline_search_black_18dp.png"), pointer !important;
 }
 
 .btn-mylocation{

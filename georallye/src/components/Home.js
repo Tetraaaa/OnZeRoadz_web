@@ -8,7 +8,6 @@ class Home extends Component {
     state = {
         lat: 0,
         lng: 0,
-        markers: null,
         predictions: [],
         lieu: '',
         focusOnBar: false
@@ -26,18 +25,6 @@ class Home extends Component {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
-        })
-    }
-
-    /**
-     * Positionner le marker
-     */
-    mapClicked = (mapProps, map, clickEvent) => {
-        this.setState({
-            markers: {
-                lat: clickEvent.latLng.lat(),
-                lng: clickEvent.latLng.lng()
-            }
         })
     }
 
@@ -126,14 +113,8 @@ class Home extends Component {
                                 <Map className="map" 
                                 google={this.props.google} 
                                 center={{ lat: this.state.lat, lng: this.state.lng }} 
-                                zoom={14} 
-                                onClick={this.mapClicked}>
+                                zoom={14}>
                                     <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
-                                    {this.state.markers ?
-                                        <Marker position={{ lat: this.state.markers.lat, lng: this.state.markers.lng }} />
-                                        :
-                                        null
-                                    }
                                 </Map>
                                 <Button className="btn-mylocation" onClick={this.location}>
                                     <i className="material-icons">my_location</i>

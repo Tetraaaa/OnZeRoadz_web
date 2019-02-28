@@ -70,7 +70,6 @@ class Space extends Component {
     }
 
     render() {
-        console.log(this.state.focusOnBar)
         return (
             <div className="container-fluid">
                 <Row>

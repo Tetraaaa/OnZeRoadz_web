@@ -19,7 +19,10 @@ export default class Menu extends Component {
 						<NavItem eventKey={1} href="/circuits">
 							Mes circuits
 						</NavItem>
-						<NavItem eventKey={2} href="/friends">
+						<NavItem eventKey={2} href="/circuits">
+							Mon suivi
+						</NavItem>
+						<NavItem eventKey={3} href="/friends">
 							Mes connaissances
 						</NavItem>
 					</Nav>
