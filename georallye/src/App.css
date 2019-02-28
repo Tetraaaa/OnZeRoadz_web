@@ -46,6 +46,11 @@ div#content {
   color: white;
 }
 
+.navbar-brand{
+  display: flex;
+  align-items: center;
+}
+
 .navbar-default {
   background-color: #5C6BC0 !important;
   border-top: 2px solid #AE4D4E;
@@ -54,8 +59,8 @@ div#content {
 
 .navbar-default .navbar-brand {
   color: white;
-  font-family: "Billabong";
-  font-size: 33px;
+  font-family: "Lobster";
+  font-size: 25px;
   color: #7a1e26;
   /* text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; */
 }

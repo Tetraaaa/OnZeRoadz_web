@@ -10,7 +10,7 @@ export default class Menu extends Component {
             <Navbar default collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <Link to="/"><i className="material-icons">near_me</i><span>GeoRallye</span></Link>
+                        <Link to="/"><i className="material-icons">near_me</i><span>OnZeRoadz</span></Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
