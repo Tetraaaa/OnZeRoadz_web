@@ -164,7 +164,7 @@ class Circuit extends Component {
                                     name="info-step"
                                     placeholder="Description de l'étape" />
                                 <ControlLabel className="lbl-radio-title">
-                                    Mode de validation de l'étape &nbsp;
+                                    Mode de validation de l'arrivée à l'étape &nbsp;
                                     <i className="material-icons">info</i>
                                 </ControlLabel>
                                 <ControlLabel className="lbl-radio">
