@@ -173,3 +173,14 @@
     margin: 5px 15px;
     width: 90%;
 }
+
+.lbl-radio{
+    font-weight: inherit;
+    margin: 15px 30px 50px 15px;
+}
+
+.lbl-radio-title{
+    font-weight: inherit;
+    font-size: 16px;
+    margin: 5px 15px;
+}

@@ -4,7 +4,7 @@ import '../App.css';
 import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
 import Sidebar from "react-sidebar";
-import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel } from 'react-bootstrap';
+import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, Radio } from 'react-bootstrap';
 
 class Circuit extends Component {
     constructor(props) {
@@ -131,11 +131,11 @@ class Circuit extends Component {
      */
     onMarkerDragEnd = (coord, index) => {
         this.setState(prevState => {
-          const markers = [...this.state.markers];
-          markers[index] = { ...markers[index], lat : coord.latLng.lat(), lng : coord.latLng.lng() };
-          return { markers };
+            const markers = [...this.state.markers];
+            markers[index] = { ...markers[index], lat: coord.latLng.lat(), lng: coord.latLng.lng() };
+            return { markers };
         });
-      };
+    };
 
     componentDidMount() {
         this.location();
@@ -149,7 +149,7 @@ class Circuit extends Component {
                     sidebar={
                         this.state.typeSideBar === 'marker' ?
                             <Form>
-                                <ControlLabel className="title-step">Etape A</ControlLabel>
+                                <ControlLabel className="title-step">{this.state.marker.id}</ControlLabel>
                                 <FormControl
                                     className="name-step"
                                     type="text"
@@ -161,14 +161,36 @@ class Circuit extends Component {
                                     className="info-step"
                                     name="info-step"
                                     placeholder="Description de l'étape" />
+                                <ControlLabel className="lbl-radio-title">
+                                    Mode de validation de l'étape &nbsp;
+                                    <i className="material-icons">info</i>
+                                </ControlLabel>
+                                <ControlLabel className="lbl-radio">
+                                    <input
+                                        type="radio"
+                                        value="valid_auto"
+                                        name="formStepValid"
+                                        id="formStepValid"
+                                    />
+                                    Automatique
+                                </ControlLabel>
+                                <ControlLabel className="lbl-radio">
+                                    <input
+                                        type="radio"
+                                        value="valid_manu"
+                                        name="formStepValid"
+                                        id="formStepValid"
+                                    />
+                                    Manuelle
+                                </ControlLabel>
                                 {/**TODO :si déjà une question mettre "afficher la question" */}
-                                <Button className="btn-question" 
-                                        onClick={() => this.setState({ modalQuestionShow: true })}>
-                                        QUESTION
+                                <Button className="btn-question"
+                                    onClick={() => this.setState({ modalQuestionShow: true })}>
+                                    QUESTION
                                 </Button>
-                                <Button className="btn-question" 
-                                        href="/circuit">
-                                        TRAJET
+                                <Button className="btn-question"
+                                    href="/circuit">
+                                    TRAJET
                                 </Button>
                                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
                             </Form>
@@ -246,7 +268,7 @@ class Circuit extends Component {
                             this.mapClicked
                             :
                             null
-                          }>
+                        }>
                         <Marker position={{ lat: this.state.lat, lng: this.state.lng }} icon={{
                             url: require("../img/my_location.svg"),
                             scaledSize: new this.props.google.maps.Size(30, 30)
@@ -254,10 +276,10 @@ class Circuit extends Component {
                         {
                             this.state.markers.map((marker, index) => {
                                 return (
-                                    <Marker draggable={true} 
-                                            position={{ lat: marker.lat, lng: marker.lng }} 
-                                            onClick={this.onClickMarker}
-                                            onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)} />
+                                    <Marker draggable={true}
+                                        position={{ lat: marker.lat, lng: marker.lng }}
+                                        onClick={this.onClickMarker}
+                                        onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)} />
                                 )
                             }
                             )
