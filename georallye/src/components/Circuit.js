@@ -3,6 +3,7 @@ import { Map, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
 import '../App.css';
 import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
+import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, Radio } from 'react-bootstrap';
 
@@ -143,6 +144,7 @@ class Circuit extends Component {
 
     render() {
         let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
+        let modalTransitClose = () => this.setState({ modalTransitShow: false });
         return (
             <div className="container-fluid-circuit">
                 <Sidebar
@@ -188,11 +190,12 @@ class Circuit extends Component {
                                     onClick={() => this.setState({ modalQuestionShow: true })}>
                                     QUESTION
                                 </Button>
-                                <Button className="btn-question"
-                                    href="/circuit">
-                                    TRAJET
+                                <Button className="btn-question" 
+                                        onClick={() => this.setState({ modalTransitShow: true })}>
+                                        TRAJET
                                 </Button>
                                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
+                                <ModalTransit show={this.state.modalTransitShow} onHide={modalTransitClose} />
                             </Form>
                             :
                             <Form>

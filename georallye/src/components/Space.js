@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Row, Col, FormControl, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import ModalCircuit from './ModalCircuit';
 import '../styles/Home.css';
 import '../App.css';
 
@@ -70,6 +71,7 @@ class Space extends Component {
     }
 
     render() {
+        let modalCircuitClose = () => this.setState({ modalCircuitShow: false });
         return (
             <div className="container-fluid">
                 <Row>
@@ -128,7 +130,10 @@ class Space extends Component {
 
                     <Col xs={5}>
                         <Row>
-                            <Button className="btn-circuit" href="/circuit">Créer un circuit</Button>
+                            <Button className="btn-circuit" onClick={() => this.setState({ modalCircuitShow: true })}>
+                                Créer un circuit
+                            </Button>
+                            <ModalCircuit show={this.state.modalCircuitShow} onHide={modalCircuitClose} />
                         </Row>
                         <Row>
                             <Col className="class-container">CLASSEMENT</Col>
