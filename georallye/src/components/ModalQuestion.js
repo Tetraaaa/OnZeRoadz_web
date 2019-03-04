@@ -1,8 +1,22 @@
 import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import '../App.css';
 
 class ModalQuestion extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            typeQuestion: "",
+            nbPoint: 0,
+            question: "",
+            infos: "",
+            reponse: ""
+        };
+    }
+
+    handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
+
     render() {
         return (
             <Modal show={this.props.show}>
@@ -14,28 +28,57 @@ class ModalQuestion extends Component {
                     <Form>
                         <FormGroup className="question-container">
                             <ControlLabel>Type question :</ControlLabel>
-                            <FormControl componentClass="select" name="select-type-question" className="select-type-question"/>
-            
+                            <FormControl
+                                componentClass="select"
+                                name="typeQuestion"
+                                className="select-type-question"
+                                value={this.state.typeQuestion}
+                                onChange={this.handleInputChange} />
+
                             <ControlLabel>Nb points :</ControlLabel>
-                            <FormControl type="number" name="nb-point" className="nb-point"/>
+                            <FormControl
+                                type="number"
+                                name="nbPoint"
+                                className="nb-point"
+                                value={this.state.nbPoint}
+                                onChange={this.handleInputChange} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControl className="textarea" name="question" placeholder="Question" componentClass="textarea" rows="2" />
+                            <FormControl
+                                className="textarea"
+                                name="question"
+                                placeholder="Question"
+                                componentClass="textarea"
+                                rows="2"
+                                value={this.state.question}
+                                onChange={this.handleInputChange} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControl name="infos" placeholder="Informations complémentaires" type="text" />
+                            <FormControl
+                                name="infos"
+                                placeholder="Informations complémentaires"
+                                type="text"
+                                value={this.state.infos}
+                                onChange={this.handleInputChange} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControl className="textarea" name="reponse" placeholder="Réponse" componentClass="textarea" rows="3" />
+                            <FormControl
+                                className="textarea"
+                                name="reponse"
+                                placeholder="Réponse"
+                                componentClass="textarea"
+                                rows="3"
+                                value={this.state.reponse}
+                                onChange={this.handleInputChange} />
                         </FormGroup>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
-                            ANNULER
+                        ANNULER
                         </Button>
-                        <Button variant="primary" type="button" className="btn-valid">
-                            VALIDER
+                    <Button variant="primary" type="button" className="btn-valid">
+                        VALIDER
                         </Button>
                 </Modal.Footer>
             </Modal>

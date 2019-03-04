@@ -22,7 +22,8 @@ class Circuit extends Component {
             focusOnBar: false,
             modalQuestionShow: false,
             id: 1,
-            addMarkerActive: false
+            addMarkerActive: false,
+            circuitDuration: 0
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -202,7 +203,12 @@ class Circuit extends Component {
                                 <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
                                 <FormGroup className="duration-container">
                                     <ControlLabel className="duration-txt">Durée éstimée du circuit (en minutes) :</ControlLabel>
-                                    <FormControl className="circuit-duration" name="circuit-duration" type="number" />
+                                    <FormControl
+                                        className="circuit-duration"
+                                        name="circuitDuration"
+                                        type="number"
+                                        value={this.state.circuitDuration}
+                                        onChange={this.handleInputChange} />/>
                                 </FormGroup>
                                 {this.state.markers ?
                                     this.state.markers.map((marker) => {
