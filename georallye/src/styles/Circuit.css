@@ -184,3 +184,53 @@
     font-size: 16px;
     margin: 5px 15px;
 }
+
+.duration-txt {
+    font-weight: inherit;
+    font-size: 16px;
+    margin-left: 10px
+}
+
+.duration-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circuit-duration {
+    width: 85px;
+    margin: 0 10px 0 10px;
+    padding-right: 0;
+}
+
+/**
+* MODAL QUESTION
+*/
+.select-type-question{
+    width: 200px;
+    margin: 0 10px 0 10px;
+}
+
+.nb-point {
+    width: 150px;
+    margin-left: 10px;
+}
+
+.question-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/**
+* MODAL TRANSIT
+*/
+.select-type-transit{
+    width: 450px;
+}
+
+.transit-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

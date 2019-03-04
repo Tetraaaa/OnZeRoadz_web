@@ -12,9 +12,12 @@ class ModalQuestion extends Component {
 
                 <Modal.Body>
                     <Form>
-                        <ControlLabel>Type de la question :</ControlLabel>
-                        <FormGroup>
-                            <FormControl componentClass="select" name="select-type"/>
+                        <FormGroup className="question-container">
+                            <ControlLabel>Type question :</ControlLabel>
+                            <FormControl componentClass="select" name="select-type-question" className="select-type-question"/>
+            
+                            <ControlLabel>Nb points :</ControlLabel>
+                            <FormControl type="number" name="nb-point" className="nb-point"/>
                         </FormGroup>
                         <FormGroup>
                             <FormControl className="textarea" name="question" placeholder="Question" componentClass="textarea" rows="2" />
@@ -25,7 +28,6 @@ class ModalQuestion extends Component {
                         <FormGroup>
                             <FormControl className="textarea" name="reponse" placeholder="Réponse" componentClass="textarea" rows="3" />
                         </FormGroup>
-                        
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>

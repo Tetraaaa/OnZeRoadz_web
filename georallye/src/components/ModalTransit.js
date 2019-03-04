@@ -10,6 +10,10 @@ class ModalTransit extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                    <FormGroup className="transit-container">
+                            <ControlLabel>Type du transit :</ControlLabel>
+                            <FormControl componentClass="select" name="select-type-transit" className="select-type-transit"/>
+                        </FormGroup>
                         <FormGroup>
                             <ControlLabel>Instructions pour se rendre à l'étape :</ControlLabel>
                             <FormControl

@@ -5,7 +5,7 @@ import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
-import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, Radio } from 'react-bootstrap';
+import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 
 class Circuit extends Component {
     constructor(props) {
@@ -190,9 +190,9 @@ class Circuit extends Component {
                                     onClick={() => this.setState({ modalQuestionShow: true })}>
                                     QUESTION
                                 </Button>
-                                <Button className="btn-question" 
-                                        onClick={() => this.setState({ modalTransitShow: true })}>
-                                        TRAJET
+                                <Button className="btn-question"
+                                    onClick={() => this.setState({ modalTransitShow: true })}>
+                                    TRAJET
                                 </Button>
                                 <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
                                 <ModalTransit show={this.state.modalTransitShow} onHide={modalTransitClose} />
@@ -200,6 +200,10 @@ class Circuit extends Component {
                             :
                             <Form>
                                 <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
+                                <FormGroup className="duration-container">
+                                    <ControlLabel className="duration-txt">Durée éstimée du circuit (en minutes) :</ControlLabel>
+                                    <FormControl className="circuit-duration" name="circuit-duration" type="number" />
+                                </FormGroup>
                                 {this.state.markers ?
                                     this.state.markers.map((marker) => {
                                         return (
