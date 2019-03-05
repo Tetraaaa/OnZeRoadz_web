@@ -6,6 +6,8 @@ import MenuCo from "./components/MenuCo";
 import Home from "./components/Home";
 import Space from "./components/Space";
 import Circuit from './components/Circuit';
+import MyCircuits from './components/MyCircuits';
+import Recapitulatif from './components/Recapitulatif';
 
 class App extends Component {
 
@@ -19,6 +21,8 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/space" component={Space} />
           <Route path="/circuit" component={Circuit} />
+          <Route path="/circuits" component={MyCircuits} />
+          <Route path="/recapitulatif" component={Recapitulatif} />
         </div>
       </Router>
 

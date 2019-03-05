@@ -212,7 +212,7 @@ class Circuit extends Component {
                                         name="circuitDuration"
                                         type="number"
                                         value={this.state.circuitDuration}
-                                        onChange={this.handleInputChange} />/>
+                                        onChange={this.handleInputChange} />
                                 </FormGroup>
                                 {this.state.markers ?
                                     this.state.markers.map((marker) => {
