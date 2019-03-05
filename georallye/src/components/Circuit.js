@@ -287,7 +287,7 @@ class Circuit extends Component {
                             null
                         }>
                         <Marker position={{ lat: this.state.lat, lng: this.state.lng }} icon={{
-                            url: require("../img/my_location.svg"),
+                            url: require("../resources/img/my_location.svg"),
                             scaledSize: new this.props.google.maps.Size(30, 30)
                         }} />
                         {
