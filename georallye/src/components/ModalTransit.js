@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 
 class ModalTransit extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -21,14 +23,14 @@ class ModalTransit extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                    <FormGroup className="transit-container">
+                        <FormGroup className="transit-container">
                             <ControlLabel>Type du transit :</ControlLabel>
-                            <FormControl 
-                                componentClass="select" 
+                            <FormControl
+                                componentClass="select"
                                 name="typeTransit"
                                 value={this.state.typeTransit}
                                 onChange={this.handleInputChange}
-                                className="select-type-transit"/>
+                                className="select-type-transit" />
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Instructions pour se rendre à l'étape :</ControlLabel>
@@ -46,9 +48,17 @@ class ModalTransit extends Component {
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
                         ANNULER
                         </Button>
-                    <Button variant="primary" type="button" className="btn-valid">
-                        VALIDER
+                    <Link to={{
+                        pathname: "/circuit",
+                        infoTransit: [{
+                            typeTransit: this.state.typeTransit,
+                            instructions: this.state.instructions
+                        }]
+                    }}>
+                        <Button variant="primary" type="button" className="btn-valid">
+                            VALIDER
                         </Button>
+                    </Link>
                 </Modal.Footer>
             </Modal>
         )

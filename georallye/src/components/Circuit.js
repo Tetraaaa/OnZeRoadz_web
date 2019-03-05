@@ -7,6 +7,7 @@ import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 
+
 class Circuit extends Component {
     constructor(props) {
         super(props);
@@ -141,6 +142,9 @@ class Circuit extends Component {
 
     componentDidMount() {
         this.location();
+        console.log(this.props.location.infoCircuit)
+        console.log(this.props.location.infoQuestion)
+        console.log(this.props.location.infoTransit)
     }
 
     render() {

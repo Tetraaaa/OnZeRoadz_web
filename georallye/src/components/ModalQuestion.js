@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import '../App.css';
+import { Link } from 'react-router-dom';
+
 
 class ModalQuestion extends Component {
 
@@ -77,9 +79,19 @@ class ModalQuestion extends Component {
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
                         ANNULER
                         </Button>
-                    <Button variant="primary" type="button" className="btn-valid">
-                        VALIDER
+                    <Link to={{
+                        pathname: "/circuit",
+                        infoQuestion: [{ 
+                            typeQuestion: this.state.typeQuestion, 
+                            nbPoint: this.state.nbPoint,
+                            question: this.state.question,
+                            infos: this.state.infos,
+                            reponse: this.state.reponse }]
+                    }}>
+                        <Button variant="primary" type="button" className="btn-valid">
+                            VALIDER
                         </Button>
+                    </Link>
                 </Modal.Footer>
             </Modal>
         )
