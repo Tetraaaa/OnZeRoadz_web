@@ -13,6 +13,14 @@ class ModalTransit extends Component {
         };
     }
 
+    /**
+     * Envoie infos au component Circuit
+     */
+    sendInfoTransit = () => {
+        this.props.callbackFromParent(this.state);
+        this.props.onHide();
+    }
+
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
     render() {
@@ -48,17 +56,9 @@ class ModalTransit extends Component {
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
                         ANNULER
                         </Button>
-                    <Link to={{
-                        pathname: "/circuit",
-                        infoTransit: [{
-                            typeTransit: this.state.typeTransit,
-                            instructions: this.state.instructions
-                        }]
-                    }}>
-                        <Button variant="primary" type="button" className="btn-valid">
+                        <Button variant="primary" type="button" className="btn-valid" onClick={this.sendInfoTransit}>
                             VALIDER
                         </Button>
-                    </Link>
                 </Modal.Footer>
             </Modal>
         )

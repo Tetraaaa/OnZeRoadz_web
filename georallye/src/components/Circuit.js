@@ -24,7 +24,9 @@ class Circuit extends Component {
             modalQuestionShow: false,
             id: 1,
             addMarkerActive: false,
-            circuitDuration: 0
+            circuitDuration: 0,
+            question : null,
+            transit: null
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -140,11 +142,26 @@ class Circuit extends Component {
         });
     };
 
+    /**
+     * Récupération données modal Question
+     */
+    myCallbackQuestion = (dataFromQuestion) => {
+        let question = dataFromQuestion; 
+        this.setState({ question : question}, () => console.log(this.state.question))
+    }
+
+    /**
+     * Récupération données modal Transit
+     */
+    myCallbackTransit = (dataFromTransit) => {
+        let transit = dataFromTransit; 
+        this.setState({ transit : transit}, () => console.log(this.state.transit))
+    }
+
+
     componentDidMount() {
         this.location();
         console.log(this.props.location.infoCircuit)
-        console.log(this.props.location.infoQuestion)
-        console.log(this.props.location.infoTransit)
     }
 
     render() {
@@ -199,8 +216,16 @@ class Circuit extends Component {
                                     onClick={() => this.setState({ modalTransitShow: true })}>
                                     TRAJET
                                 </Button>
-                                <ModalQuestion show={this.state.modalQuestionShow} onHide={modalQuestionClose} />
-                                <ModalTransit show={this.state.modalTransitShow} onHide={modalTransitClose} />
+                                <ModalQuestion 
+                                    show={this.state.modalQuestionShow} 
+                                    onHide={modalQuestionClose} 
+                                    callbackFromParent={this.myCallbackQuestion}
+                                />
+                                <ModalTransit 
+                                    show={this.state.modalTransitShow} 
+                                    onHide={modalTransitClose}
+                                    callbackFromParent={this.myCallbackTransit}
+                                 />
                             </Form>
                             :
                             <Form>
@@ -271,7 +296,7 @@ class Circuit extends Component {
                     <Button className="btn-list" onClick={this.onClickList}>
                         <i className="material-icons">list</i>
                     </Button>
-                    <Button className="btn-check" onClick={this.onClickList}>
+                    <Button className="btn-check" href="/recapitulatif">
                         <i className="material-icons">check</i>
                     </Button>
                     <Button className="btn-mylocation-circuit" onClick={this.location}>

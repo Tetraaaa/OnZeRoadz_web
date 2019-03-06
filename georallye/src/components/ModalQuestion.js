@@ -9,12 +9,20 @@ class ModalQuestion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            typeQuestion: "",
-            nbPoint: 0,
-            question: "",
-            infos: "",
-            reponse: ""
+                typeQuestion: "",
+                nbPoint: 0,
+                question: "",
+                infos: "",
+                reponse: ""
         };
+    }
+
+    /**
+     * Envoie infos au component Circuit
+     */
+    sendInfoQuestion = () => {
+        this.props.callbackFromParent(this.state);
+        this.props.onHide();
     }
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -36,7 +44,6 @@ class ModalQuestion extends Component {
                                 className="select-type-question"
                                 value={this.state.typeQuestion}
                                 onChange={this.handleInputChange} />
-
                             <ControlLabel>Nb points :</ControlLabel>
                             <FormControl
                                 type="number"
@@ -79,19 +86,9 @@ class ModalQuestion extends Component {
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
                         ANNULER
                         </Button>
-                    <Link to={{
-                        pathname: "/circuit",
-                        infoQuestion: [{ 
-                            typeQuestion: this.state.typeQuestion, 
-                            nbPoint: this.state.nbPoint,
-                            question: this.state.question,
-                            infos: this.state.infos,
-                            reponse: this.state.reponse }]
-                    }}>
-                        <Button variant="primary" type="button" className="btn-valid">
-                            VALIDER
+                    <Button variant="primary" type="button" className="btn-valid" onClick={this.sendInfoQuestion}>
+                        VALIDER
                         </Button>
-                    </Link>
                 </Modal.Footer>
             </Modal>
         )
