@@ -9,25 +9,57 @@ import Circuit from './components/Circuit';
 import MyCircuits from './components/MyCircuits';
 import Recapitulatif from './components/Recapitulatif';
 
-class App extends Component {
+class App extends Component
+{
 
-  render() {
-    return (
-      <Router>
-        <div>
-          {/*TODO : if co alors Menu sinon MenuCo*/}
-          {/* <Menu /> */}
-          <MenuCo />
-          <Route exact path="/" component={Home} />
-          <Route path="/space" component={Space} />
-          <Route path="/circuit" component={Circuit} />
-          <Route path="/circuits" component={MyCircuits} />
-          <Route path="/recapitulatif" component={Recapitulatif} />
-        </div>
-      </Router>
+    componentDidMount()
+    {
+        this.whoami()
+    }
 
-    );
-  }
+    whoami = () =>
+    {
+        let currentUser = localStorage.getItem("username");
+        if(currentUser)
+        {
+            fetch("https://www.api.onzeroadz.fr/index.php/whoami", {
+                "credentials":"include"
+            })
+            .then(response => {
+                if(response.ok)
+                {
+                    response.text().then(text => console.log(text))
+                    response.json().then(json => {
+                        localStorage.setItem("username", json)
+                    })
+                }
+                else
+                {
+                    localStorage.setItem("username", null);
+                }
+            })
+            .catch(error => {
+                localStorage.setItem("username", null);
+            })
+        }
+        
+    }
+    render()
+    {
+        return (
+            <Router>
+                <div>
+                    { localStorage.getItem("username") ? <MenuCo/> : <Menu/>}
+                    <Route exact path="/" component={Home} />
+                    <Route path="/space" component={Space} />
+                    <Route path="/circuit" component={Circuit} />
+                    <Route path="/circuits" component={MyCircuits} />
+                    <Route path="/recapitulatif" component={Recapitulatif} />
+                </div>
+            </Router>
+
+        );
+    }
 
 }
 

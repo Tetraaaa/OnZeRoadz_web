@@ -1,21 +1,36 @@
 import React, { Component } from 'react'
 import { Navbar, Nav, NavItem} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import '../styles/Menu.css';
 import '../App.css';
 import ModalConnexion from './ModalConnexion';
 import ModalInscription from './ModalInscription';
 
-export default class Menu extends Component {
+class Menu extends Component {
 
-    state = {
-        modalConnexionShow: false,
-        modalInscriptionShow: false
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            modalConnexionShow:false,
+            modalInscriptionShow:false
+        }
+    }
+
+    modalConnexionClose = () =>
+    {
+        this.setState({modalConnexionShow:false})
+        this.props.history.push("/")
+    }
+
+    modalInscriptionClose = () =>
+    {
+        this.setState({modalInscriptionShow:false, modalConnexionShow:true})
+        this.props.history.push("/");
     }
 
     render() {
-        let modalConnexionClose = () => this.setState({ modalConnexionShow: false });
-        let modalInscriptionClose = () => this.setState({ modalInscriptionShow: false });
+        
         return (
             <Navbar default collapseOnSelect>
                 <Navbar.Header>
@@ -28,15 +43,17 @@ export default class Menu extends Component {
                     <NavItem eventKey={1} href="#">
                         <a className="btn-connexion" onClick={() => this.setState({ modalConnexionShow: true })}>CONNEXION
                         </a>
-                        <ModalConnexion show={this.state.modalConnexionShow} onHide={modalConnexionClose} />
+                        <ModalConnexion show={this.state.modalConnexionShow} close={this.modalConnexionClose} onHide={() => this.setState({modalConnexionShow:false})}/>
                     </NavItem>
                     <NavItem eventKey={2} href="#">
                         <a className="btn-inscription" onClick={() => this.setState({ modalInscriptionShow: true })}>INSCRIPTION
                         </a>
-                        <ModalInscription show={this.state.modalInscriptionShow} onHide={modalInscriptionClose} />
+                        <ModalInscription show={this.state.modalInscriptionShow} close={this.modalInscriptionClose} onHide={() => this.setState({modalInscriptionShow:false})}/>
                     </NavItem>
                 </Nav>
             </Navbar>
         );
     }
 }
+
+export default withRouter(Menu)
