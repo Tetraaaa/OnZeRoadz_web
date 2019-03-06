@@ -39,7 +39,11 @@ class ModalTransit extends Component {
      * Envoie infos au component Circuit
      */
     sendInfoTransit = () => {
-        this.props.callbackFromParent(this.state);
+        let transit = {
+            transitType : this.state.typeTransit,
+            description : this.state.instructions
+        }
+        this.props.callbackFromParent(transit);
         this.props.onHide();
     }
 

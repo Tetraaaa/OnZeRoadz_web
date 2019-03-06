@@ -43,7 +43,14 @@ class ModalQuestion extends Component {
      * Envoie infos au component Circuit
      */
     sendInfoQuestion = () => {
-        this.props.callbackFromParent(this.state);
+        let question = {
+            points : this.state.nbPoint,
+            text : this.state.question,
+            info : this.state.infos,
+            type : this.state.typeQuestion,
+            reponse : this.state.reponse
+        }
+        this.props.callbackFromParent(question);
         this.props.onHide();
     }
 

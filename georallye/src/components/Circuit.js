@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
-import { Map, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper, Polyline, InfoWindow } from 'google-maps-react';
 import '../App.css';
 import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
+import { checkStatus } from '../resources/utils';
+import URL from '../resources/Url'
 
 
 class Circuit extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: this.props.location.infoCircuit[0].nameCircuit,
+            description: this.props.location.infoCircuit[0].nameCircuit,
             lat: 0,
             lng: 0,
             marker: null,
@@ -25,8 +29,10 @@ class Circuit extends Component {
             id: 1,
             addMarkerActive: false,
             circuitDuration: 0,
-            question : null,
-            transit: null
+            question: null,
+            questions: [],
+            transit: null,
+            transits: []
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -146,22 +152,57 @@ class Circuit extends Component {
      * Récupération données modal Question
      */
     myCallbackQuestion = (dataFromQuestion) => {
-        let question = dataFromQuestion; 
-        this.setState({ question : question}, () => console.log(this.state.question))
+        let question = dataFromQuestion;
+        this.setState({
+            question: question,
+            questions: this.state.questions.concat(question)
+        }, () => console.log(this.state.questions))
     }
 
     /**
      * Récupération données modal Transit
      */
     myCallbackTransit = (dataFromTransit) => {
-        let transit = dataFromTransit; 
-        this.setState({ transit : transit}, () => console.log(this.state.transit))
+        let transit = dataFromTransit;
+        this.setState({
+            transit: transit,
+            transits: this.state.transits.concat(transit)
+        }, () => console.log(this.state.transit))
+    }
+
+    /**
+     * Requête POST pour la création de circuit
+     */
+    createCircuit = (credentials) => {
+        const token = window.localStorage.getItem('token');
+        return fetch(URL.addCircuit, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: JSON.stringify(credentials)
+        })
+        .then(checkStatus)
+        .then((res) => { return res })
+        .catch((err) => console.error(err));
+    }
+
+    /**
+     * Création du circuit
+     */
+    circuit = () => {
+        this.createCircuit({
+            name: this.state.name,
+            description: this.state.description,
+            duration: this.state.circuitDuration,
+            networkRequired: true,
+            startLongitude: this.state.markers[0].lng,
+            startLatitude: this.state.markers[0].lat,
+            transits: this.state.transits
+        })
     }
 
 
     componentDidMount() {
         this.location();
-        console.log(this.props.location.infoCircuit)
     }
 
     render() {
@@ -216,16 +257,16 @@ class Circuit extends Component {
                                     onClick={() => this.setState({ modalTransitShow: true })}>
                                     TRAJET
                                 </Button>
-                                <ModalQuestion 
-                                    show={this.state.modalQuestionShow} 
-                                    onHide={modalQuestionClose} 
+                                <ModalQuestion
+                                    show={this.state.modalQuestionShow}
+                                    onHide={modalQuestionClose}
                                     callbackFromParent={this.myCallbackQuestion}
                                 />
-                                <ModalTransit 
-                                    show={this.state.modalTransitShow} 
+                                <ModalTransit
+                                    show={this.state.modalTransitShow}
                                     onHide={modalTransitClose}
                                     callbackFromParent={this.myCallbackTransit}
-                                 />
+                                />
                             </Form>
                             :
                             <Form>
@@ -319,9 +360,11 @@ class Circuit extends Component {
                             this.state.markers.map((marker, index) => {
                                 return (
                                     <Marker draggable={true}
+                                        label={marker.id.toString()}
                                         position={{ lat: marker.lat, lng: marker.lng }}
                                         onClick={this.onClickMarker}
-                                        onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)} />
+                                        onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)}>
+                                    </Marker>
                                 )
                             }
                             )
