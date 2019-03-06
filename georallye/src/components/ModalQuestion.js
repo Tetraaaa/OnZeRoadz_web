@@ -1,20 +1,42 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import '../App.css';
-import { Link } from 'react-router-dom';
+import { checkStatus } from '../resources/utils';
+import URL from '../resources/Url'
 
+class TypeQuestionItem extends React.Component {
+    render() {
+        return <option value={this.props.data.type}>{this.props.data.label}</option>
+    }
+}
 
 class ModalQuestion extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-                typeQuestion: "",
-                nbPoint: 0,
-                question: "",
-                infos: "",
-                reponse: ""
+            typeQuestion: "",
+            nbPoint: 0,
+            question: "",
+            infos: "",
+            reponse: "",
+            listTypeQuestion: []
         };
+    }
+
+    /**
+    * Récupération type question
+    */
+    findTypeQuestion = () => {
+        const token = window.localStorage.getItem('token');
+        return fetch(URL.typeQuestion, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        })
+            .then(checkStatus)
+            .then((res) => console.log(res))
+            //.then(listTypeQuestion => this.setState({ listTypeQuestion: listTypeQuestion }))
+            .catch((err) => console.error(err));
     }
 
     /**
@@ -23,6 +45,10 @@ class ModalQuestion extends Component {
     sendInfoQuestion = () => {
         this.props.callbackFromParent(this.state);
         this.props.onHide();
+    }
+
+    componentDidMount() {
+        this.findTypeQuestion();
     }
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -43,7 +69,11 @@ class ModalQuestion extends Component {
                                 name="typeQuestion"
                                 className="select-type-question"
                                 value={this.state.typeQuestion}
-                                onChange={this.handleInputChange} />
+                                onChange={this.handleInputChange} >
+                                {this.state.listTypeQuestion.map((typeQuestion) =>
+                                    <TypeQuestionItem key={typeQuestion.type} data={typeQuestion} />)
+                                }
+                            </FormControl>
                             <ControlLabel>Nb points :</ControlLabel>
                             <FormControl
                                 type="number"

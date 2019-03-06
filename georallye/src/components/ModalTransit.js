@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { checkStatus } from '../resources/utils';
+import  URL from '../resources/Url'
 
+class TypeTransitItem extends React.Component {
+    render() {
+        return <option value={this.props.data.id}>{this.props.data.label}</option>
+    }
+}
 
 class ModalTransit extends Component {
 
@@ -9,8 +15,24 @@ class ModalTransit extends Component {
         super(props);
         this.state = {
             typeTransit: "",
-            instructions: ""
+            instructions: "",
+            listTypeTransit: []
         };
+    }
+
+    /**
+     * Récupération type transit
+     */
+    findTypeTransit = () => {
+        const token = window.localStorage.getItem('token');
+        return fetch(URL.typeTransit, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        })
+            .then(checkStatus)
+            .then((res) => console.log(res))
+            //.then(listTypeTransit => this.setState({ listTypeTransit: listTypeTransit }))
+            .catch((err) => console.error(err));
     }
 
     /**
@@ -20,6 +42,11 @@ class ModalTransit extends Component {
         this.props.callbackFromParent(this.state);
         this.props.onHide();
     }
+
+    componentDidMount() {
+        this.findTypeTransit();
+    }
+
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
@@ -38,7 +65,11 @@ class ModalTransit extends Component {
                                 name="typeTransit"
                                 value={this.state.typeTransit}
                                 onChange={this.handleInputChange}
-                                className="select-type-transit" />
+                                className="select-type-transit" >
+                                {this.state.listTypeTransit.map((typeTransit) =>
+                                    <TypeTransitItem key={typeTransit.id} data={typeTransit} />)
+                                }
+                            </FormControl>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>Instructions pour se rendre à l'étape :</ControlLabel>
@@ -56,8 +87,8 @@ class ModalTransit extends Component {
                     <Button variant="primary" type="button" className="btn-cancel" onClick={this.props.onHide}>
                         ANNULER
                         </Button>
-                        <Button variant="primary" type="button" className="btn-valid" onClick={this.sendInfoTransit}>
-                            VALIDER
+                    <Button variant="primary" type="button" className="btn-valid" onClick={this.sendInfoTransit}>
+                        VALIDER
                         </Button>
                 </Modal.Footer>
             </Modal>
