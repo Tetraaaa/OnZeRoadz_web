@@ -83,7 +83,7 @@ class Recapitulatif extends Component {
                             autoComplete="off"
                             value={this.state.slope}
                             onChange={this.handleInputChange} />
-                        <Button onClick={this.props.location.validate}>VALIDER</Button>
+                        <Button onClick={() => {this.props.location.validate(this.state)}}>VALIDER</Button>
                     </Col>
                     <Col xs={8}>
                         <Row>

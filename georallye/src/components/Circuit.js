@@ -82,7 +82,7 @@ class Circuit extends Component
                 transits: this.state.transits.concat({
                     id: marker.id,
                     description: "",
-                    transitType: 0,
+                    transitType: 1,
                     step: {
                         name: "",
                         latitude: marker.lat,
@@ -109,19 +109,15 @@ class Circuit extends Component
                         name: this.state.name,
                         latitude: this.state.lat,
                         longitude: this.state.lng,
-                        geoloc: item.step.geoloc,
+                        geoloc: this.state.validationType,
                         description: this.state.description
                     },
                     description: item.description
                 })
                 this.setState({
                     transits: newState
-                }, () =>
-                    {
-                        let item = this.state.transits.find(item => item.id === this.state.currentId)
-                    })
+                })
             }
-
         }
     }
 
@@ -193,9 +189,39 @@ class Circuit extends Component
      */
     onClickMarker = (marker) =>
     {
-        let item = this.state.transits.find(item => item.id === marker.id);
-        this.onSetSidebarOpen();
-        this.setState({ typeSideBar: 'marker', currentId: item.id, name: item.step.name, description: item.step.description })
+        if(this.state.sidebarOpen)
+        {
+            let item = this.state.transits.find(item => item.id === this.state.currentId)
+            if (item)
+            {
+                let newState = this.state.transits.filter(i => i.id !== item.id);
+                newState = newState.concat({
+                    id: item.id,
+                    transitType: item.transitType,
+                    step: {
+                        name: this.state.name,
+                        latitude: this.state.lat,
+                        longitude: this.state.lng,
+                        geoloc: this.state.validationType,
+                        description: this.state.description
+                    },
+                    description: item.description
+                })
+                this.setState({
+                    transits: newState
+                }, () => {
+                    let item = this.state.transits.find(item => item.id === marker.id);
+                    this.setState({ typeSideBar: 'marker', currentId: item.id, name: item.step.name, description: item.step.description })
+                })
+            }
+        }
+        else
+        {
+            let item = this.state.transits.find(item => item.id === marker.id);
+            this.onSetSidebarOpen();
+            this.setState({ typeSideBar: 'marker', currentId: item.id, name: item.step.name, description: item.step.description })
+        }
+
     }
 
     /**
@@ -256,19 +282,18 @@ class Circuit extends Component
     /**
      * Requête POST pour la création de circuit
      */
-    createCircuit = () =>
+    createCircuit = (infos) =>
     {
         let details = {
-            "name": this.props.location.infoCircuit[0].nameCircuit,
-            "description": this.props.location.infoCircuit[0].descCircuit,
-            "duration": 650,
+            "name": infos.name,
+            "description": infos.description,
+            "duration": infos.duration,
             "networkRequired": true,
             "startLongitude": this.state.transits[0].step.longitude,
             "startLatitude": this.state.transits[0].step.latitude,
             "transits": this.state.transits
         }
 
-        console.log(details)
 
         return fetch(URL.addCircuit, {
             method: 'POST',
@@ -363,7 +388,7 @@ class Circuit extends Component
                             <Form>
                                 <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
                                 <FormGroup className="duration-container">
-                                    <ControlLabel className="duration-txt">Durée éstimée du circuit (en minutes) :</ControlLabel>
+                                    <ControlLabel className="duration-txt">Durée estimée du circuit (en minutes) :</ControlLabel>
                                     <FormControl
                                         className="circuit-duration"
                                         name="circuitDuration"
@@ -371,11 +396,12 @@ class Circuit extends Component
                                         value={this.state.circuitDuration}
                                         onChange={this.handleInputChange} />
                                 </FormGroup>
-                                {this.state.markers ?
-                                    this.state.markers.map((marker) =>
+                                {this.state.transits.length > 0 ?
+                                    this.state.transits.map((item) =>
                                     {
+                                        let t = item.step.name || "(Pas de nom)"
                                         return (
-                                            <div>{marker.id} </div>
+                                            <div>{" - " + t} </div>
                                         )
                                     }
                                     )
