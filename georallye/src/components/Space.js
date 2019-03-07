@@ -4,6 +4,8 @@ import { Row, Col, FormControl, Button, ListGroup, ListGroupItem } from 'react-b
 import ModalCircuit from './ModalCircuit';
 import '../styles/Home.css';
 import '../App.css';
+import { checkStatus } from '../resources/utils';
+import URL from '../resources/Url';
 
 class Space extends Component {
     state = {
@@ -12,9 +14,9 @@ class Space extends Component {
         markers: null,
         predictions: [],
         lieu: '',
-        focusOnBar: false
+        focusOnBar: false,
+        listCircuits: []
     }
-
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
@@ -66,7 +68,22 @@ class Space extends Component {
         this.handleInputChange(e);
     }
 
+    /**
+     * Récupération des circuits publiés
+     */
+    findPublishedCircuits = () => {
+        return fetch(URL.publishedCircuits, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(checkStatus)
+        .then((res) => res.json())
+        .then(listCircuits => this.setState({ listCircuits: listCircuits }))
+        .catch((err) => console.error(err));
+    }
+
     componentDidMount() {
+        this.findPublishedCircuits();
         this.location();
     }
 
@@ -113,12 +130,22 @@ class Space extends Component {
                         </Row>
                         <Row>
                             <Col className="map-container">
-                                <Map className="map" google={this.props.google} center={{ lat: this.state.lat, lng: this.state.lng }} zoom={14} onClick={this.mapClicked}>
-                                    <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
-                                    {this.state.markers ?
-                                        <Marker position={{ lat: this.state.markers.lat, lng: this.state.markers.lng }} />
-                                        :
-                                        null
+                                <Map className="map"
+                                    google={this.props.google}
+                                    center={{ lat: this.state.lat, lng: this.state.lng }}
+                                    zoom={14}
+                                    onClick={this.mapClicked}>
+                                    <Marker position={{ lat: this.state.lat, lng: this.state.lng }}
+                                        icon={{
+                                            url: require("../resources/img/my_location.svg"),
+                                            scaledSize: new this.props.google.maps.Size(30, 30)
+                                        }} />
+                                    {
+                                        this.state.listCircuits.map((circuit) => {
+                                            return (
+                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                            )
+                                        })
                                     }
                                     <Button className="btn-mylocation" onClick={this.location}>
                                         <i className="material-icons">my_location</i>

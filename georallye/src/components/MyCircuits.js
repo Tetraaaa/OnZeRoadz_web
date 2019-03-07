@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Row, Col, FormControl, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 import '../styles/MyCircuits.css';
+import { checkStatus } from '../resources/utils';
+import URL from '../resources/Url';
 
 class MyCircuits extends Component {
 
     state = {
         lat: 0,
         lng: 0,
+        myCircuits: []
     }
 
     /** 
@@ -22,7 +25,22 @@ class MyCircuits extends Component {
         })
     }
 
+    /**
+     * Récupération des circuits publiés
+     */
+    findMyCircuits = () => {
+        return fetch(URL.myCircuits, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(checkStatus)
+            .then((res) => res.json())
+            .then(myCircuits => this.setState({ myCircuits: myCircuits }))
+            .catch((err) => console.error(err));
+    }
+
     componentDidMount() {
+        this.findMyCircuits()
         this.location();
     }
 
@@ -62,7 +80,18 @@ class MyCircuits extends Component {
                                     google={this.props.google}
                                     center={{ lat: this.state.lat, lng: this.state.lng }}
                                     zoom={14}>
-                                    <Marker position={{ lat: this.state.lat, lng: this.state.lng }} />
+                                    <Marker position={{ lat: this.state.lat, lng: this.state.lng }}
+                                        icon={{
+                                            url: require("../resources/img/my_location.svg"),
+                                            scaledSize: new this.props.google.maps.Size(30, 30)
+                                        }} />
+                                    {
+                                        this.state.myCircuits.map((circuit) => {
+                                            return (
+                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                            )
+                                        })
+                                    }
                                 </Map>
                             </Col>
                         </Row>
