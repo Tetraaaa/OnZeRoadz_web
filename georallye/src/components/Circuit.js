@@ -5,6 +5,7 @@ import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
+import {Link} from 'react-router-dom';
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
@@ -18,7 +19,7 @@ class Circuit extends Component
         this.state = {
             name: "",
             description: "",
-            geoloc:false,
+            geoloc: false,
             lat: 0,
             lng: 0,
             marker: null,
@@ -36,8 +37,8 @@ class Circuit extends Component
             questions: [],
             transit: null,
             transits: [],
-            currentId:0,
-            validationType:false
+            currentId: 0,
+            validationType: false
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -63,7 +64,7 @@ class Circuit extends Component
      */
     mapClicked = (mapProps, map, clickEvent) =>
     {
-        if(this.state.addMarkerActive && !this.state.sidebarOpen)
+        if (this.state.addMarkerActive && !this.state.sidebarOpen)
         {
             let marker = {
                 id: this.state.id,
@@ -71,14 +72,14 @@ class Circuit extends Component
                 lng: Number(clickEvent.latLng.lng().toFixed(3))
             }
             this.setState({
-                currentId:0,
+                currentId: 0,
                 sidebarOpen: false,
-                name:"",
+                name: "",
                 id: this.state.id + 1,
                 marker: marker,
                 markers: this.state.markers.concat(marker),
                 transits: this.state.transits.concat({
-                    id:marker.id,
+                    id: marker.id,
                     description: "",
                     transitType: "",
                     step: {
@@ -89,32 +90,33 @@ class Circuit extends Component
                         description: "",
                         questions: []
                     }
-    
+
                 })
             });
         }
         else
         {
-            this.setState({sidebarOpen:false})
+            this.setState({ sidebarOpen: false })
             let item = this.state.transits.find(item => item.id === this.state.currentId)
-            if(item)
+            if (item)
             {
                 let newState = this.state.transits.filter(i => i.id !== item.id);
                 newState = newState.concat({
-                    id:item.id,
-                    transitType:item.transitType,
-                    step:{
-                        name:this.state.name,
-                        latitude:this.state.lat,
-                        longitude:this.state.lng,
-                        geoloc:item.step.geoloc,
-                        description:this.state.description
+                    id: item.id,
+                    transitType: item.transitType,
+                    step: {
+                        name: this.state.name,
+                        latitude: this.state.lat,
+                        longitude: this.state.lng,
+                        geoloc: item.step.geoloc,
+                        description: this.state.description
                     },
-                    description:item.description
+                    description: item.description
                 })
                 this.setState({
-                    transits:newState
-                }, () => {
+                    transits: newState
+                }, () =>
+                {
                     let item = this.state.transits.find(item => item.id === this.state.currentId)
                 })
             }
@@ -190,9 +192,9 @@ class Circuit extends Component
      */
     onClickMarker = (marker) =>
     {
-        let item = this.state.transits.find(item => item.id === marker.id );
+        let item = this.state.transits.find(item => item.id === marker.id);
         this.onSetSidebarOpen();
-        this.setState({ typeSideBar: 'marker', currentId:item.id ,name: item.step.name, description:item.step.description })
+        this.setState({ typeSideBar: 'marker', currentId: item.id, name: item.step.name, description: item.step.description })
     }
 
     /**
@@ -224,15 +226,16 @@ class Circuit extends Component
     {
         let transit = this.state.transits.find(item => item.id === this.state.currentId)
         let step = transit.step;
-        if(step)
+        if (step)
         {
             step.questions = step.questions.concat(dataFromQuestion);
             let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
             newState = newState.concat(transit)
-            this.setState({transits:newState}, () => {
+            this.setState({ transits: newState }, () =>
+            {
                 console.log(this.state.transits)
             })
-        }        
+        }
     }
 
     /**
@@ -241,14 +244,14 @@ class Circuit extends Component
     myCallbackTransit = (dataFromTransit) =>
     {
         let transit = this.state.transits.find(item => item.id === this.state.currentId);
-        if(transit)
+        if (transit)
         {
             transit.description = dataFromTransit.description;
             transit.transitType = 0;
 
             let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
             newState = newState.concat(transit)
-            this.setState({transits:newState})
+            this.setState({ transits: newState })
         }
     }
 
@@ -265,11 +268,11 @@ class Circuit extends Component
             "startLongitude": this.state.transits[0].step.longitude,
             "startLatitude": this.state.transits[0].step.latitude,
             "transits": this.state.transits
-          }
+        }
 
         return fetch(URL.addCircuit, {
             method: 'POST',
-            credentials:"include",
+            credentials: "include",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(details)
         })
@@ -307,10 +310,10 @@ class Circuit extends Component
                                     rows="6"
                                     className="info-step"
                                     name="description"
-                                    placeholder="Description de l'étape" 
+                                    placeholder="Description de l'étape"
                                     value={this.state.description}
                                     onChange={this.handleInputChange}
-                                    />
+                                />
                                 <ControlLabel className="lbl-radio-title">
                                     Mode de validation de l'arrivée à l'étape &nbsp;
                                     <i className="material-icons">info</i>
@@ -425,9 +428,17 @@ class Circuit extends Component
                     <Button className="btn-list" onClick={this.onClickList}>
                         <i className="material-icons">list</i>
                     </Button>
-                    <Button className="btn-check" href="/recapitulatif">
-                        <i className="material-icons">check</i>
-                    </Button>
+                    <Link to={{
+                        pathname: "/recapitulatif",
+                        name:this.props.location.infoCircuit[0].nameCircuit,
+                        description:this.props.location.infoCircuit[0].descCircuit,
+                        validate:this.createCircuit
+                    }}>
+                        <Button className="btn-check">
+                            <i className="material-icons">check</i>
+                        </Button>
+                    </Link>
+
                     <Button className="btn-mylocation-circuit" onClick={this.location}>
                         <i className="material-icons">my_location</i>
                     </Button>
