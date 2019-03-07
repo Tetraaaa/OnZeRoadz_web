@@ -5,7 +5,7 @@ import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
@@ -38,7 +38,8 @@ class Circuit extends Component
             transit: null,
             transits: [],
             currentId: 0,
-            validationType: false
+            validationType: false,
+            loaded:false
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -81,7 +82,7 @@ class Circuit extends Component
                 transits: this.state.transits.concat({
                     id: marker.id,
                     description: "",
-                    transitType: "",
+                    transitType: 0,
                     step: {
                         name: "",
                         latitude: marker.lat,
@@ -116,9 +117,9 @@ class Circuit extends Component
                 this.setState({
                     transits: newState
                 }, () =>
-                {
-                    let item = this.state.transits.find(item => item.id === this.state.currentId)
-                })
+                    {
+                        let item = this.state.transits.find(item => item.id === this.state.currentId)
+                    })
             }
 
         }
@@ -231,10 +232,7 @@ class Circuit extends Component
             step.questions = step.questions.concat(dataFromQuestion);
             let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
             newState = newState.concat(transit)
-            this.setState({ transits: newState }, () =>
-            {
-                console.log(this.state.transits)
-            })
+            this.setState({ transits: newState })
         }
     }
 
@@ -270,6 +268,8 @@ class Circuit extends Component
             "transits": this.state.transits
         }
 
+        console.log(details)
+
         return fetch(URL.addCircuit, {
             method: 'POST',
             credentials: "include",
@@ -285,6 +285,7 @@ class Circuit extends Component
     componentDidMount()
     {
         this.location();
+        this.setState({loaded:true})
     }
 
     render()
@@ -428,16 +429,22 @@ class Circuit extends Component
                     <Button className="btn-list" onClick={this.onClickList}>
                         <i className="material-icons">list</i>
                     </Button>
-                    <Link to={{
-                        pathname: "/recapitulatif",
-                        name:this.props.location.infoCircuit[0].nameCircuit,
-                        description:this.props.location.infoCircuit[0].descCircuit,
-                        validate:this.createCircuit
-                    }}>
-                        <Button className="btn-check">
-                            <i className="material-icons">check</i>
-                        </Button>
-                    </Link>
+                    {
+                        this.state.loaded && this.state.transits.length > 0?
+                            <Link to={{
+                                pathname: "/recapitulatif",
+                                name: this.props.location.infoCircuit[0].nameCircuit,
+                                description: this.props.location.infoCircuit[0].descCircuit,
+                                validate: this.createCircuit
+                            }}>
+                                <Button className="btn-check">
+                                    <i className="material-icons">check</i>
+                                </Button>
+                            </Link>
+                            :
+                            null
+                    }
+
 
                     <Button className="btn-mylocation-circuit" onClick={this.location}>
                         <i className="material-icons">my_location</i>

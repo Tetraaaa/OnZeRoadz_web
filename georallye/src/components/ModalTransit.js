@@ -43,6 +43,7 @@ class ModalTransit extends Component {
             description: this.state.instructions
         }
         this.props.callbackFromParent(transit);
+        this.setState({typeTransit:"", instructions:""})
         this.props.onHide();
     }
 
