@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import { checkStatus } from '../resources/utils';
-import  URL from '../resources/Url'
+import URL from '../resources/Url'
 
 class TypeTransitItem extends React.Component {
     render() {
@@ -24,14 +24,13 @@ class ModalTransit extends Component {
      * Récupération type transit
      */
     findTypeTransit = () => {
-        const token = window.localStorage.getItem('token');
         return fetch(URL.typeTransit, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            headers: { 'Content-Type': 'application/json' },
         })
             .then(checkStatus)
-            .then((res) => console.log(res))
-            //.then(listTypeTransit => this.setState({ listTypeTransit: listTypeTransit }))
+            .then((res) => res.json())
+            .then(listTypeTransit => this.setState({ listTypeTransit: listTypeTransit }))
             .catch((err) => console.error(err));
     }
 
@@ -40,8 +39,8 @@ class ModalTransit extends Component {
      */
     sendInfoTransit = () => {
         let transit = {
-            transitType : this.state.typeTransit,
-            description : this.state.instructions
+            transitType: this.state.typeTransit,
+            description: this.state.instructions
         }
         this.props.callbackFromParent(transit);
         this.props.onHide();

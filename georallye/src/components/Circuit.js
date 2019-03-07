@@ -32,7 +32,10 @@ class Circuit extends Component {
             question: null,
             questions: [],
             transit: null,
-            transits: []
+            transits: [],
+
+
+
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -64,7 +67,20 @@ class Circuit extends Component {
             sidebarOpen: false,
             id: this.state.id + 1,
             marker: marker,
-            markers: this.state.markers.concat(marker)
+            markers: this.state.markers.concat(marker),
+            transits:this.state.transits.concat({
+                description:"",
+                transitType:"",
+                step:{
+                    name: "",
+                    latitude: marker.lat,
+                    longitude: marker.lng,
+                    geoLoc: true,
+                    description: "",
+                    questions: []
+                },
+
+            })
         });
     }
 
@@ -208,6 +224,7 @@ class Circuit extends Component {
     render() {
         let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
         let modalTransitClose = () => this.setState({ modalTransitShow: false });
+        console.log(this.state.transits)
         return (
             <div className="container-fluid-circuit">
                 <Sidebar

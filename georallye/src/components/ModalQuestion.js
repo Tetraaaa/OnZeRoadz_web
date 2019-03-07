@@ -28,14 +28,13 @@ class ModalQuestion extends Component {
     * Récupération type question
     */
     findTypeQuestion = () => {
-        const token = window.localStorage.getItem('token');
         return fetch(URL.typeQuestion, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            headers: { 'Content-Type': 'application/json'},
         })
             .then(checkStatus)
-            .then((res) => console.log(res))
-            //.then(listTypeQuestion => this.setState({ listTypeQuestion: listTypeQuestion }))
+            .then((res) => res.json())
+            .then(listTypeQuestion => this.setState({ listTypeQuestion: listTypeQuestion }))
             .catch((err) => console.error(err));
     }
 
