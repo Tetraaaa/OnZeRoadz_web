@@ -140,7 +140,7 @@ class Home extends Component {
                                     {
                                         this.state.listCircuits.map((circuit) => {
                                             return (
-                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
                                             )
                                         })
                                     }

@@ -32,7 +32,7 @@ class ModalQuestion extends Component
     * Récupération type question
     */
     findTypeQuestion = () =>
-    {
+    {        
         return fetch(URL.typeQuestion, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -40,7 +40,7 @@ class ModalQuestion extends Component
             .then(checkStatus)
             .then((res) => res.json())
             .then(listTypeQuestion => this.setState({ listTypeQuestion: listTypeQuestion }))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err));            
     }
 
     /**
@@ -53,10 +53,13 @@ class ModalQuestion extends Component
             text: this.state.question,
             info: this.state.infos,
             type: this.state.typeQuestion,
-            reponse: this.state.reponse
+            params: {
+                response: this.state.reponse
+            }
+            
         }
         this.setState({
-            typeQuestion: "",
+            typeQuestion: this.state.listTypeQuestion.length > 0 ? this.state.listTypeQuestion[0].type: "",
             nbPoint: 0,
             question: "",
             infos: "",

@@ -22,6 +22,8 @@ class Circuit extends Component
             geoLoc: false,
             lat: 0,
             lng: 0,
+            userLat:0,
+            userLng:0,
             marker: null,
             sidebarOpen: false,
             typeSideBar: '',
@@ -55,7 +57,9 @@ class Circuit extends Component
         {
             this.setState({
                 lat: position.coords.latitude,
-                lng: position.coords.longitude
+                lng: position.coords.longitude,
+                userLat: position.coords.latitude,
+                userLng: position.coords.longitude
             })
         })
     }
@@ -73,6 +77,8 @@ class Circuit extends Component
                 lng: Number(clickEvent.latLng.lng().toFixed(3))
             }
             this.setState({
+                lat: Number(clickEvent.latLng.lat().toFixed(3)),
+                lng: Number(clickEvent.latLng.lng().toFixed(3)),
                 currentId: 0,
                 sidebarOpen: false,
                 name: "",
@@ -304,7 +310,7 @@ class Circuit extends Component
             body: JSON.stringify(details)
         })
             .then(checkStatus)
-            .then((res) => { return res })
+            .then((res) => { this.props.history.push('/') })
             .catch((err) => console.error(err));
     }
 
@@ -399,11 +405,11 @@ class Circuit extends Component
                                         onChange={this.handleInputChange} />
                                 </FormGroup>
                                 {this.state.transits.length > 0 ?
-                                    this.state.transits.map((item) =>
+                                    this.state.transits.map((item, index) =>
                                     {
                                         let t = item.step.name || "(Pas de nom)"
                                         return (
-                                            <div>{" - " + t} </div>
+                                            <div key={index}>{" - " + t} </div>
                                         )
                                     }
                                     )
@@ -482,7 +488,7 @@ class Circuit extends Component
                         center={{ lat: this.state.lat, lng: this.state.lng }}
                         zoom={14}
                         onClick={this.mapClicked}>
-                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }} icon={{
+                        <Marker position={{ lat: this.state.userLat, lng: this.state.userLng }} icon={{
                             url: require("../resources/img/my_location.svg"),
                             scaledSize: new this.props.google.maps.Size(30, 30)
                         }} />
@@ -493,6 +499,7 @@ class Circuit extends Component
                                     <Marker draggable={true}
                                         label={marker.id.toString()}
                                         position={{ lat: marker.lat, lng: marker.lng }}
+                                        key={index}
                                         id={marker.id}
                                         onClick={this.onClickMarker}
                                         onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)}>
