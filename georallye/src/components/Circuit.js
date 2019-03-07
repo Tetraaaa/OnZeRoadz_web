@@ -18,6 +18,7 @@ class Circuit extends Component
         this.state = {
             name: "",
             description: "",
+            geoloc:false,
             lat: 0,
             lng: 0,
             marker: null,
@@ -35,10 +36,8 @@ class Circuit extends Component
             questions: [],
             transit: null,
             transits: [],
-            currentId:0
-
-
-
+            currentId:0,
+            validationType:false
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -86,7 +85,7 @@ class Circuit extends Component
                         name: "",
                         latitude: marker.lat,
                         longitude: marker.lng,
-                        geoLoc: true,
+                        geoLoc: this.state.validationType,
                         description: "",
                         questions: []
                     }
@@ -223,23 +222,34 @@ class Circuit extends Component
      */
     myCallbackQuestion = (dataFromQuestion) =>
     {
-        let question = dataFromQuestion;
-        this.setState({
-            question: question,
-            questions: this.state.questions.concat(question)
-        }, () => console.log(this.state.questions))
+        let transit = this.state.transits.find(item => item.id === this.state.currentId)
+        let step = transit.step;
+        if(step)
+        {
+            step.questions = step.questions.concat(dataFromQuestion);
+            let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
+            newState = newState.concat(transit)
+            this.setState({transits:newState}, () => {
+                console.log(this.state.transits)
+            })
+        }        
     }
 
     /**
      * Récupération données modal Transit
      */
     myCallbackTransit = (dataFromTransit) =>
-    {/*
-        let transit = dataFromTransit;
-        this.setState({
-            transit: transit,
-            transits: this.state.transits.concat(transit)
-        }, () => console.log(this.state.transit))*/
+    {
+        let transit = this.state.transits.find(item => item.id === this.state.currentId);
+        if(transit)
+        {
+            transit.description = dataFromTransit.description;
+            transit.transitType = 0;
+
+            let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
+            newState = newState.concat(transit)
+            this.setState({transits:newState})
+        }
     }
 
     /**
@@ -250,58 +260,22 @@ class Circuit extends Component
         let details = {
             "name": this.props.location.infoCircuit[0].nameCircuit,
             "description": this.props.location.infoCircuit[0].descCircuit,
-            "duration": "554",
-            "networkRequired": "false",
-            "startLongitude": "7.735001",
-            "startLatitude": "48.530653",
-            "transits": [
-              {
-                "description": "Rendez-vous devant la fac de pharma",
-                "transitType": "int",
-                "step": {
-                  "name": "string",
-                  "latitude": 0,
-                  "longitude": 0,
-                  "geoLoc": true,
-                  "description": "string",
-                  "questions": [
-                    {
-                      "points": 0,
-                      "text": "string",
-                      "info": "string",
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
-            ]
+            "duration": 650,
+            "networkRequired": true,
+            "startLongitude": this.state.transits[0].step.longitude,
+            "startLatitude": this.state.transits[0].step.latitude,
+            "transits": this.state.transits
           }
 
         return fetch(URL.addCircuit, {
             method: 'POST',
             credentials:"include",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify()
+            body: JSON.stringify(details)
         })
             .then(checkStatus)
             .then((res) => { return res })
             .catch((err) => console.error(err));
-    }
-
-    /**
-     * Création du circuit
-     */
-    circuit = () =>
-    {
-        this.createCircuit({
-            name: this.state.name,
-            description: this.state.description,
-            duration: this.state.circuitDuration,
-            networkRequired: true,
-            startLongitude: this.state.markers[0].lng,
-            startLatitude: this.state.markers[0].lat,
-            transits: this.state.transits
-        })
     }
 
 
@@ -320,7 +294,7 @@ class Circuit extends Component
                     sidebar={
                         this.state.typeSideBar === 'marker' ?
                             <Form>
-                                <ControlLabel className="title-step">{this.state.marker.id}</ControlLabel>
+                                <ControlLabel className="title-step">{this.state.currentId}</ControlLabel>
                                 <FormControl
                                     className="name-step"
                                     type="text"
@@ -341,21 +315,23 @@ class Circuit extends Component
                                     Mode de validation de l'arrivée à l'étape &nbsp;
                                     <i className="material-icons">info</i>
                                 </ControlLabel>
-                                <ControlLabel className="lbl-radio">
+                                <ControlLabel className="lbl-radio" name="validationType">
                                     <input
                                         type="radio"
-                                        value="valid_auto"
-                                        name="formStepValid"
+                                        value={this.state.validationType}
+                                        name="validationType"
                                         id="formStepValid"
+                                        onChange={this.handleInputChange}
                                     />
                                     Automatique
                                 </ControlLabel>
                                 <ControlLabel className="lbl-radio">
                                     <input
                                         type="radio"
-                                        value="valid_manu"
-                                        name="formStepValid"
+                                        value={this.state.validationType}
+                                        name="validationType"
                                         id="formStepValid"
+                                        onChange={this.handleInputChange}
                                     />
                                     Manuelle
                                 </ControlLabel>
