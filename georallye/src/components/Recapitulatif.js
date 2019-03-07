@@ -46,7 +46,7 @@ class Recapitulatif extends Component {
                         <ControlLabel>Nom du circuit</ControlLabel>
                         <FormControl
                             type="text"
-                            name="nomCircuit"
+                            name="name"
                             autoComplete="off"
                             value={this.state.name} 
                             onChange={this.handleInputChange}/>
@@ -55,7 +55,7 @@ class Recapitulatif extends Component {
                             componentClass="textarea"
                             rows="6"
                             className="textarea"
-                            name="descCircuit"
+                            name="description"
                             autoComplete="off"
                             value={this.state.description} 
                             onChange={this.handleInputChange}/>
@@ -63,7 +63,7 @@ class Recapitulatif extends Component {
                         <FormControl
                             className="input-nombre"
                             type="text"
-                            name="dureeCircuit"
+                            name="duration"
                             autoComplete="off"
                             value={this.state.duration} 
                             onChange={this.handleInputChange}/>
@@ -71,7 +71,7 @@ class Recapitulatif extends Component {
                         <FormControl
                             className="input-nombre"
                             type="text"
-                            name="longCircuit"
+                            name="length"
                             autoComplete="off" 
                             value={this.state.length}
                             onChange={this.handleInputChange}/>
@@ -79,7 +79,7 @@ class Recapitulatif extends Component {
                         <FormControl
                             className="input-nombre"
                             type="text"
-                            name="deniveleCircuit"
+                            name="slope"
                             autoComplete="off"
                             value={this.state.slope}
                             onChange={this.handleInputChange} />

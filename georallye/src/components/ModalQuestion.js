@@ -4,18 +4,22 @@ import '../App.css';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url'
 
-class TypeQuestionItem extends React.Component {
-    render() {
+class TypeQuestionItem extends React.Component
+{
+    render()
+    {
         return <option value={this.props.data.type}>{this.props.data.label}</option>
     }
 }
 
-class ModalQuestion extends Component {
+class ModalQuestion extends Component
+{
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
         this.state = {
-            typeQuestion: "",
+            typeQuestion: "Free",
             nbPoint: 0,
             question: "",
             infos: "",
@@ -27,10 +31,11 @@ class ModalQuestion extends Component {
     /**
     * Récupération type question
     */
-    findTypeQuestion = () => {
+    findTypeQuestion = () =>
+    {
         return fetch(URL.typeQuestion, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
         })
             .then(checkStatus)
             .then((res) => res.json())
@@ -41,25 +46,35 @@ class ModalQuestion extends Component {
     /**
      * Envoie infos au component Circuit
      */
-    sendInfoQuestion = () => {
+    sendInfoQuestion = () =>
+    {
         let question = {
-            points : this.state.nbPoint,
-            text : this.state.question,
-            info : this.state.infos,
-            type : this.state.typeQuestion,
-            reponse : this.state.reponse
+            points: this.state.nbPoint,
+            text: this.state.question,
+            info: this.state.infos,
+            type: this.state.typeQuestion,
+            reponse: this.state.reponse
         }
+        this.setState({
+            typeQuestion: "",
+            nbPoint: 0,
+            question: "",
+            infos: "",
+            reponse: ""
+        })
         this.props.callbackFromParent(question);
         this.props.onHide();
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
         this.findTypeQuestion();
     }
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    render() {
+    render()
+    {
         return (
             <Modal show={this.props.show}>
                 <Modal.Header closeButton onClick={this.props.onHide}>

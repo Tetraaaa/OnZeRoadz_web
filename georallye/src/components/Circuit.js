@@ -19,7 +19,7 @@ class Circuit extends Component
         this.state = {
             name: "",
             description: "",
-            geoloc: false,
+            geoLoc: false,
             lat: 0,
             lng: 0,
             marker: null,
@@ -87,7 +87,7 @@ class Circuit extends Component
                         name: "",
                         latitude: marker.lat,
                         longitude: marker.lng,
-                        geoLoc: this.state.validationType,
+                        geoLoc: false,
                         description: "",
                         questions: []
                     }
@@ -109,8 +109,9 @@ class Circuit extends Component
                         name: this.state.name,
                         latitude: this.state.lat,
                         longitude: this.state.lng,
-                        geoloc: this.state.validationType,
-                        description: this.state.description
+                        geoLoc: false,
+                        description: this.state.description,
+                        questions:item.step.questions
                     },
                     description: item.description
                 })
@@ -202,8 +203,9 @@ class Circuit extends Component
                         name: this.state.name,
                         latitude: this.state.lat,
                         longitude: this.state.lng,
-                        geoloc: this.state.validationType,
-                        description: this.state.description
+                        geoLoc: false,
+                        description: this.state.description,
+                        questions:item.step.questions
                     },
                     description: item.description
                 })
@@ -271,7 +273,7 @@ class Circuit extends Component
         if (transit)
         {
             transit.description = dataFromTransit.description;
-            transit.transitType = 0;
+            transit.transitType = 1;
 
             let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
             newState = newState.concat(transit)
