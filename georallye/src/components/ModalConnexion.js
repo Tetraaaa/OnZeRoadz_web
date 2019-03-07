@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {Redirect} from "react-router-dom";
 import { Modal, Form, Button, FormControl, FormGroup } from 'react-bootstrap';
+import {withRouter} from 'react-router-dom';
+import { withAuth } from './AuthContext';
 
 class ModalConnexion extends Component
 {
@@ -10,48 +11,27 @@ class ModalConnexion extends Component
         this.state = {
             login:"",
             password:"",
-            errMess:"",
-            loginSuccessful:false
+            errMess:""
         }
     }
 
     login = () =>
     {
-        this.setState({errMess:""})
-        let details = 
-        {
-            "username": this.state.login,
-            "password": this.state.password
-        }
-        fetch("https://www.api.onzeroadz.fr/index.php/login", {
-            "method":"POST",
-            "credentials":"include",
-            "body":JSON.stringify(details),
-            headers:{
-                "Content-Type":"application/json"
-            }
+        this.setState({ errMess:"" });
+        this.props.auth.signin({
+            username: this.state.login,
+            password: this.state.password
         })
-        .then(response => {
-            if(response.ok)
-            {
-                response.json().then(json => {
-                    localStorage.setItem("username", json.username)
-                })
-                this.props.close()
-            }
-            else
-            {
-                this.setState({errMess:"Nom de compte ou mot de passe incorrect"})
-            }
+        .then(() => {
+            this.props.history.push('/space');
         })
         .catch(error => {
-            this.setState({errMess:"Nom de compte ou mot de passe incorrect"})
-        })
+            this.setState({ errMess: error.message });
+        });
     }
 
     render()
     {
-        if(this.state.loginSuccessful) return <Redirect to="/"/>
         return (
             <Modal show={this.props.show} >
                 <Modal.Header closeButton onClick={this.props.onHide}>
@@ -79,4 +59,4 @@ class ModalConnexion extends Component
     }
 }
 
-export default ModalConnexion;
+export default withRouter(withAuth(ModalConnexion));

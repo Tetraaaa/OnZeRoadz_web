@@ -19,14 +19,12 @@ class Menu extends Component {
 
     modalConnexionClose = () =>
     {
-        this.setState({modalConnexionShow:false})
-        this.props.history.push("/")
+        this.setState({modalConnexionShow:false});
     }
 
     modalInscriptionClose = () =>
     {
-        this.setState({modalInscriptionShow:false, modalConnexionShow:true})
-        this.props.history.push("/");
+        this.setState({modalInscriptionShow:false, modalConnexionShow:true});
     }
 
     render() {
@@ -43,12 +41,12 @@ class Menu extends Component {
                     <NavItem eventKey={1} href="#">
                         <a className="btn-connexion" onClick={() => this.setState({ modalConnexionShow: true })}>CONNEXION
                         </a>
-                        <ModalConnexion show={this.state.modalConnexionShow} close={this.modalConnexionClose} onHide={() => this.setState({modalConnexionShow:false})}/>
+                        <ModalConnexion show={this.state.modalConnexionShow} onHide={this.modalConnexionClose}/>
                     </NavItem>
                     <NavItem eventKey={2} href="#">
                         <a className="btn-inscription" onClick={() => this.setState({ modalInscriptionShow: true })}>INSCRIPTION
                         </a>
-                        <ModalInscription show={this.state.modalInscriptionShow} close={this.modalInscriptionClose} onHide={() => this.setState({modalInscriptionShow:false})}/>
+                        <ModalInscription show={this.state.modalInscriptionShow} onHide={this.modalInscriptionClose}/>
                     </NavItem>
                 </Nav>
             </Navbar>

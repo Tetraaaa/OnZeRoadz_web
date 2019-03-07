@@ -7,7 +7,7 @@ import ModalTransit from './ModalTransit';
 import Sidebar from "react-sidebar";
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 import { checkStatus } from '../resources/utils';
-import URL from '../resources/Url'
+import URL from '../resources/Url';
 
 
 class Circuit extends Component
