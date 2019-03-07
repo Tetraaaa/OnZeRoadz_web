@@ -245,13 +245,43 @@ class Circuit extends Component
     /**
      * Requête POST pour la création de circuit
      */
-    createCircuit = (credentials) =>
+    createCircuit = () =>
     {
-        const token = window.localStorage.getItem('token');
+        let details = {
+            "name": this.props.location.infoCircuit[0].nameCircuit,
+            "description": this.props.location.infoCircuit[0].descCircuit,
+            "duration": "554",
+            "networkRequired": "false",
+            "startLongitude": "7.735001",
+            "startLatitude": "48.530653",
+            "transits": [
+              {
+                "description": "Rendez-vous devant la fac de pharma",
+                "transitType": "int",
+                "step": {
+                  "name": "string",
+                  "latitude": 0,
+                  "longitude": 0,
+                  "geoLoc": true,
+                  "description": "string",
+                  "questions": [
+                    {
+                      "points": 0,
+                      "text": "string",
+                      "info": "string",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+
         return fetch(URL.addCircuit, {
             method: 'POST',
+            credentials:"include",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials)
+            body: JSON.stringify()
         })
             .then(checkStatus)
             .then((res) => { return res })
@@ -406,7 +436,6 @@ class Circuit extends Component
                                             )
                                         }
                                         )
-
                                     }
                                 </ListGroup>
                                 :
