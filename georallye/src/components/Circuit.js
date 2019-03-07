@@ -10,12 +10,14 @@ import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url'
 
 
-class Circuit extends Component {
-    constructor(props) {
+class Circuit extends Component
+{
+    constructor(props)
+    {
         super(props);
         this.state = {
-            name: this.props.location.infoCircuit[0].nameCircuit,
-            description: this.props.location.infoCircuit[0].nameCircuit,
+            name: "",
+            description: "",
             lat: 0,
             lng: 0,
             marker: null,
@@ -33,6 +35,7 @@ class Circuit extends Component {
             questions: [],
             transit: null,
             transits: [],
+            currentId:0
 
 
 
@@ -45,8 +48,10 @@ class Circuit extends Component {
     /** 
      * Position actuelle
     */
-    location = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
+    location = () =>
+    {
+        navigator.geolocation.getCurrentPosition((position) =>
+        {
             this.setState({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -57,40 +62,77 @@ class Circuit extends Component {
     /**
      * Positionner le marker
      */
-    mapClicked = (mapProps, map, clickEvent) => {
-        let marker = {
-            id: this.state.id,
-            lat: Number(clickEvent.latLng.lat().toFixed(3)),
-            lng: Number(clickEvent.latLng.lng().toFixed(3))
-        }
-        this.setState({
-            sidebarOpen: false,
-            id: this.state.id + 1,
-            marker: marker,
-            markers: this.state.markers.concat(marker),
-            transits:this.state.transits.concat({
-                description:"",
-                transitType:"",
-                step:{
-                    name: "",
-                    latitude: marker.lat,
-                    longitude: marker.lng,
-                    geoLoc: true,
+    mapClicked = (mapProps, map, clickEvent) =>
+    {
+        if(this.state.addMarkerActive && !this.state.sidebarOpen)
+        {
+            let marker = {
+                id: this.state.id,
+                lat: Number(clickEvent.latLng.lat().toFixed(3)),
+                lng: Number(clickEvent.latLng.lng().toFixed(3))
+            }
+            this.setState({
+                currentId:0,
+                sidebarOpen: false,
+                name:"",
+                id: this.state.id + 1,
+                marker: marker,
+                markers: this.state.markers.concat(marker),
+                transits: this.state.transits.concat({
+                    id:marker.id,
                     description: "",
-                    questions: []
-                },
+                    transitType: "",
+                    step: {
+                        name: "",
+                        latitude: marker.lat,
+                        longitude: marker.lng,
+                        geoLoc: true,
+                        description: "",
+                        questions: []
+                    }
+    
+                })
+            });
+        }
+        else
+        {
+            this.setState({sidebarOpen:false})
+            let item = this.state.transits.find(item => item.id === this.state.currentId)
+            if(item)
+            {
+                let newState = this.state.transits.filter(i => i.id !== item.id);
+                newState = newState.concat({
+                    id:item.id,
+                    transitType:item.transitType,
+                    step:{
+                        name:this.state.name,
+                        latitude:this.state.lat,
+                        longitude:this.state.lng,
+                        geoloc:item.step.geoloc,
+                        description:this.state.description
+                    },
+                    description:item.description
+                })
+                this.setState({
+                    transits:newState
+                }, () => {
+                    let item = this.state.transits.find(item => item.id === this.state.currentId)
+                })
+            }
 
-            })
-        });
+        }
     }
 
     /**
      * Recherche le lieu de la barre de recherche
      */
-    _onSearch = (item) => {
+    _onSearch = (item) =>
+    {
         fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
-            item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                if (response.ok) {
+            item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response =>
+            {
+                if (response.ok)
+                {
                     response.json().then(json => this.setState(
                         {
                             lat: json.result.geometry.location.lat,
@@ -107,11 +149,15 @@ class Circuit extends Component {
     /**
      * Affiche la liste de suggestion de la barre de recherche
      */
-    _onChangeText = (e) => {
-        if (e.target.value.length > 2) {
+    _onChangeText = (e) =>
+    {
+        if (e.target.value.length > 2)
+        {
             fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
-                e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                    if (response.ok) {
+                e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response =>
+                {
+                    if (response.ok)
+                    {
                         response.json().then(json => this.setState({ predictions: json.predictions }))
                     }
                 })
@@ -123,32 +169,38 @@ class Circuit extends Component {
     /**
      * Ouverture de la SideBar
      */
-    onSetSidebarOpen() {
+    onSetSidebarOpen()
+    {
         if (this.state.sidebarOpen === false)
             this.setState({ sidebarOpen: true })
         else
+
             (this.setState({ sidebarOpen: false }));
     }
 
     /**
      * SideBar Add
      */
-    onClickAdd = () => {
+    onClickAdd = () =>
+    {
         this.setState({ addMarkerActive: !this.state.addMarkerActive, sidebarOpen: false })
     }
 
     /**
      * SideBar Add
      */
-    onClickMarker = () => {
+    onClickMarker = (marker) =>
+    {
+        let item = this.state.transits.find(item => item.id === marker.id );
         this.onSetSidebarOpen();
-        this.setState({ typeSideBar: 'marker' })
+        this.setState({ typeSideBar: 'marker', currentId:item.id ,name: item.step.name, description:item.step.description })
     }
 
     /**
      * SideBar List
      */
-    onClickList = () => {
+    onClickList = () =>
+    {
         this.onSetSidebarOpen();
         this.setState({ typeSideBar: 'list' })
     }
@@ -156,8 +208,10 @@ class Circuit extends Component {
     /**
      * Marker onDragend
      */
-    onMarkerDragEnd = (coord, index) => {
-        this.setState(prevState => {
+    onMarkerDragEnd = (coord, index) =>
+    {
+        this.setState(prevState =>
+        {
             const markers = [...this.state.markers];
             markers[index] = { ...markers[index], lat: coord.latLng.lat(), lng: coord.latLng.lng() };
             return { markers };
@@ -167,7 +221,8 @@ class Circuit extends Component {
     /**
      * Récupération données modal Question
      */
-    myCallbackQuestion = (dataFromQuestion) => {
+    myCallbackQuestion = (dataFromQuestion) =>
+    {
         let question = dataFromQuestion;
         this.setState({
             question: question,
@@ -178,33 +233,36 @@ class Circuit extends Component {
     /**
      * Récupération données modal Transit
      */
-    myCallbackTransit = (dataFromTransit) => {
+    myCallbackTransit = (dataFromTransit) =>
+    {/*
         let transit = dataFromTransit;
         this.setState({
             transit: transit,
             transits: this.state.transits.concat(transit)
-        }, () => console.log(this.state.transit))
+        }, () => console.log(this.state.transit))*/
     }
 
     /**
      * Requête POST pour la création de circuit
      */
-    createCircuit = (credentials) => {
+    createCircuit = (credentials) =>
+    {
         const token = window.localStorage.getItem('token');
         return fetch(URL.addCircuit, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
         })
-        .then(checkStatus)
-        .then((res) => { return res })
-        .catch((err) => console.error(err));
+            .then(checkStatus)
+            .then((res) => { return res })
+            .catch((err) => console.error(err));
     }
 
     /**
      * Création du circuit
      */
-    circuit = () => {
+    circuit = () =>
+    {
         this.createCircuit({
             name: this.state.name,
             description: this.state.description,
@@ -217,14 +275,15 @@ class Circuit extends Component {
     }
 
 
-    componentDidMount() {
+    componentDidMount()
+    {
         this.location();
     }
 
-    render() {
+    render()
+    {
         let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
         let modalTransitClose = () => this.setState({ modalTransitShow: false });
-        console.log(this.state.transits)
         return (
             <div className="container-fluid-circuit">
                 <Sidebar
@@ -235,14 +294,19 @@ class Circuit extends Component {
                                 <FormControl
                                     className="name-step"
                                     type="text"
-                                    name="name-step"
-                                    placeholder="Nom de l'étape" />
+                                    name="name"
+                                    placeholder="Nom de l'étape"
+                                    value={this.state.name}
+                                    onChange={this.handleInputChange} />
                                 <FormControl
                                     componentClass="textarea"
                                     rows="6"
                                     className="info-step"
-                                    name="info-step"
-                                    placeholder="Description de l'étape" />
+                                    name="description"
+                                    placeholder="Description de l'étape" 
+                                    value={this.state.description}
+                                    onChange={this.handleInputChange}
+                                    />
                                 <ControlLabel className="lbl-radio-title">
                                     Mode de validation de l'arrivée à l'étape &nbsp;
                                     <i className="material-icons">info</i>
@@ -298,7 +362,8 @@ class Circuit extends Component {
                                         onChange={this.handleInputChange} />
                                 </FormGroup>
                                 {this.state.markers ?
-                                    this.state.markers.map((marker) => {
+                                    this.state.markers.map((marker) =>
+                                    {
                                         return (
                                             <div>{marker.id} </div>
                                         )
@@ -332,7 +397,8 @@ class Circuit extends Component {
                             this.state.focusOnBar ?
                                 <ListGroup className="list-lieu-circuit">
                                     {
-                                        this.state.predictions.map((item) => {
+                                        this.state.predictions.map((item) =>
+                                        {
                                             return (
                                                 <ListGroupItem className="lieu-item-circuit" onMouseDown={() => { this._onSearch(item) }}>
                                                     {item.description}
@@ -364,21 +430,19 @@ class Circuit extends Component {
                         google={this.props.google}
                         center={{ lat: this.state.lat, lng: this.state.lng }}
                         zoom={14}
-                        onClick={this.state.addMarkerActive ?
-                            this.mapClicked
-                            :
-                            null
-                        }>
+                        onClick={this.mapClicked}>
                         <Marker position={{ lat: this.state.lat, lng: this.state.lng }} icon={{
                             url: require("../resources/img/my_location.svg"),
                             scaledSize: new this.props.google.maps.Size(30, 30)
                         }} />
                         {
-                            this.state.markers.map((marker, index) => {
+                            this.state.markers.map((marker, index) =>
+                            {
                                 return (
                                     <Marker draggable={true}
                                         label={marker.id.toString()}
                                         position={{ lat: marker.lat, lng: marker.lng }}
+                                        id={marker.id}
                                         onClick={this.onClickMarker}
                                         onDragend={(t, map, coord) => this.onMarkerDragEnd(coord, index)}>
                                     </Marker>
