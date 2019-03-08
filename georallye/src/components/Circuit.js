@@ -73,12 +73,12 @@ class Circuit extends Component
         {
             let marker = {
                 id: this.state.id,
-                lat: Number(clickEvent.latLng.lat().toFixed(3)),
-                lng: Number(clickEvent.latLng.lng().toFixed(3))
+                lat: Number(clickEvent.latLng.lat()),
+                lng: Number(clickEvent.latLng.lng())
             }
             this.setState({
-                lat: Number(clickEvent.latLng.lat().toFixed(3)),
-                lng: Number(clickEvent.latLng.lng().toFixed(3)),
+                lat: Number(clickEvent.latLng.lat()),
+                lng: Number(clickEvent.latLng.lng()),
                 currentId: 0,
                 sidebarOpen: false,
                 name: "",
