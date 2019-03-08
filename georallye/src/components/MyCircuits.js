@@ -32,6 +32,7 @@ class MyCircuits extends Component {
         return fetch(URL.myCircuits, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
         })
             .then(checkStatus)
             .then((res) => res.json())

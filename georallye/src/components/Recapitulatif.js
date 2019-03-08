@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import { Row, Col, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import '../styles/Recapitulatif.css';
 import '../styles/Home.css';
-class Recapitulatif extends Component {
+class Recapitulatif extends Component
+{
 
     state = {
         lat: 0,
         lng: 0,
-        name:"",
-        description:"",
-        duration:"",
-        length:"",
-        slope:""
+        name: "",
+        description: "",
+        duration: "",
+        length: "",
+        slope: ""
     }
 
     /** 
      * Position actuelle
     */
-    location = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
+    location = () =>
+    {
+        navigator.geolocation.getCurrentPosition((position) =>
+        {
             this.setState({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -28,15 +31,17 @@ class Recapitulatif extends Component {
     }
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    componentDidMount() {
+    componentDidMount()
+    {
         this.location();
         this.setState({
-            name:this.props.location.name,
-            description:this.props.location.description
+            name: this.props.location.name,
+            description: this.props.location.description
         })
     }
 
-    render() {
+    render()
+    {
         return (
             <div className="container-fluid">
                 <span className="titre-page">Récapitulatif du circuit</span>
@@ -48,8 +53,8 @@ class Recapitulatif extends Component {
                             type="text"
                             name="name"
                             autoComplete="off"
-                            value={this.state.name} 
-                            onChange={this.handleInputChange}/>
+                            value={this.state.name}
+                            onChange={this.handleInputChange} />
                         <ControlLabel>Description</ControlLabel>
                         <FormControl
                             componentClass="textarea"
@@ -57,33 +62,41 @@ class Recapitulatif extends Component {
                             className="textarea"
                             name="description"
                             autoComplete="off"
-                            value={this.state.description} 
-                            onChange={this.handleInputChange}/>
+                            value={this.state.description}
+                            onChange={this.handleInputChange} />
                         <ControlLabel>Durée estimée</ControlLabel>
+                        {
+                            false ?
+                                <div>
+                                    <ControlLabel>Longueur</ControlLabel>
+                                    <FormControl
+                                        className="input-nombre"
+                                        type="text"
+                                        name="length"
+                                        autoComplete="off"
+                                        value={this.state.length}
+                                        onChange={this.handleInputChange} />
+                                    <ControlLabel>Dénivelé</ControlLabel>
+                                    <FormControl
+                                        className="input-nombre"
+                                        type="text"
+                                        name="slope"
+                                        autoComplete="off"
+                                        value={this.state.slope}
+                                        onChange={this.handleInputChange} />
+                                </div>
+                                :
+                                null
+
+                        }
                         <FormControl
                             className="input-nombre"
                             type="text"
                             name="duration"
                             autoComplete="off"
-                            value={this.state.duration} 
-                            onChange={this.handleInputChange}/>
-                        <ControlLabel>Longueur</ControlLabel>
-                        <FormControl
-                            className="input-nombre"
-                            type="text"
-                            name="length"
-                            autoComplete="off" 
-                            value={this.state.length}
-                            onChange={this.handleInputChange}/>
-                        <ControlLabel>Dénivelé</ControlLabel>
-                        <FormControl
-                            className="input-nombre"
-                            type="text"
-                            name="slope"
-                            autoComplete="off"
-                            value={this.state.slope}
+                            value={this.state.duration}
                             onChange={this.handleInputChange} />
-                        <Button onClick={() => {this.props.location.validate(this.state)}}>VALIDER</Button>
+                        <Button onClick={() => { this.props.location.validate(this.state) }}>VALIDER</Button>
                     </Col>
                     <Col xs={8}>
                         <Row>
