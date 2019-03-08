@@ -310,7 +310,7 @@ class Circuit extends Component
             body: JSON.stringify(details)
         })
             .then(checkStatus)
-            .then((res) => { this.props.history.push('/') })
+            .then((res) => { this.props.history.push('/space') })
             .catch((err) => console.error(err));
     }
 
