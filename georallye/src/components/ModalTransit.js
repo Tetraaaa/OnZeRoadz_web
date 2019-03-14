@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
+import URL from '../resources/Url';
 import { checkStatus } from '../resources/utils';
-import URL from '../resources/Url'
 
 class TypeTransitItem extends React.Component {
     render() {
@@ -43,7 +43,7 @@ class ModalTransit extends Component {
             description: this.state.instructions
         }
         this.props.callbackFromParent(transit);
-        this.setState({typeTransit:"", instructions:""})
+        this.setState({ typeTransit: "", instructions: "" })
         this.props.onHide();
     }
 

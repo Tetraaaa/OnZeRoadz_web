@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Button, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 
 class ModalInscription extends Component
 {

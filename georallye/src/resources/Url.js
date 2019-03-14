@@ -23,5 +23,7 @@ export default URL = {
     typeTransit : transit+"type",
     
     googlePlaces : "https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
-    googleAutocompletion : "https://maps.googleapis.com/maps/api/place/autocomplete/json?&input="
+    googleAutocompletion : "https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=",
+
+    apiKey : "AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk"
 }

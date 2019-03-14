@@ -1,9 +1,9 @@
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl } from 'react-bootstrap';
-import '../styles/MyCircuits.css';
-import { checkStatus } from '../resources/utils';
+import { Col, FormControl, Row } from 'react-bootstrap';
 import URL from '../resources/Url';
+import { checkStatus } from '../resources/utils';
+import '../styles/MyCircuits.css';
 
 class MyCircuits extends Component {
 
@@ -15,7 +15,7 @@ class MyCircuits extends Component {
 
     /** 
      * Position actuelle
-    */
+     */
     location = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             this.setState({
@@ -65,8 +65,7 @@ class MyCircuits extends Component {
                                 <FormControl
                                     name="etatCircuit"
                                     className="select-etat"
-                                    componentClass="select"
-                                    name="etatCircuit" />
+                                    componentClass="select" />
                             </Col>
                         </Row>
                         <Row className="liste-container">
@@ -110,5 +109,5 @@ class MyCircuits extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: ("AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+    apiKey: (URL.apiKey)
 })(MyCircuits)

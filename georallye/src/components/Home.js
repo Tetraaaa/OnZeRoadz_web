@@ -1,10 +1,10 @@
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, Button} from 'react-bootstrap';
-import '../styles/Home.css';
+import { Button, Col, Row } from 'react-bootstrap';
 import '../App.css';
-import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
+import { checkStatus } from '../resources/utils';
+import '../styles/Home.css';
 import LocationSearchInput from './LocationSearchInput';
 
 class Home extends Component {
@@ -30,42 +30,6 @@ class Home extends Component {
                 lng: position.coords.longitude
             })
         })
-    }
-
-    /**
-     * Recherche le lieu de la barre de recherche
-     */
-    _onSearch = (item) => {
-        fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
-            item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                if (response.ok) {
-                    response.json().then(json => this.setState(
-                        {
-                            lat: json.result.geometry.location.lat,
-                            lng: json.result.geometry.location.lng,
-                            lieu: item.description,
-                            focusOnBar: false
-                        }
-                    ))
-                }
-            })
-            .catch(error => console.log(error))
-    }
-
-    /**
-     * Affiche la liste de suggestion de la barre de recherche
-     */
-    _onChangeText = (e) => {
-        if (e.target.value.length > 2) {
-            fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
-                e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                    if (response.ok) {
-                        response.json().then(json => this.setState({ predictions: json.predictions }))
-                    }
-                })
-                .catch(error => console.log(error))
-        }
-        this.handleInputChange(e);
     }
 
     /**
@@ -106,7 +70,7 @@ class Home extends Component {
                     <Col xs={7}>
                         <Row>
                             <Col xs={7}>
-                                <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }}/>
+                                <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }} />
                             </Col>
                             <Col xs={5}>
                                 <Button className="btn-filtrer"><i className="material-icons">tune</i><span>Filtrer la recherche</span></Button>
@@ -126,7 +90,7 @@ class Home extends Component {
                                     {
                                         this.state.listCircuits.map((circuit) => {
                                             return (
-                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }} />
                                             )
                                         })
                                     }
@@ -155,5 +119,5 @@ class Home extends Component {
 
 
 export default GoogleApiWrapper({
-    apiKey: ("AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+    apiKey: (URL.apiKey)
 })(Home)

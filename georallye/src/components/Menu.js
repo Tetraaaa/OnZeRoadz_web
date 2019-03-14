@@ -1,34 +1,31 @@
-import React, { Component } from 'react'
-import { Navbar, Nav, NavItem} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
-import '../styles/Menu.css';
 import '../App.css';
+import '../styles/Menu.css';
 import ModalConnexion from './ModalConnexion';
 import ModalInscription from './ModalInscription';
 
 class Menu extends Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         this.state = {
-            modalConnexionShow:false,
-            modalInscriptionShow:false
+            modalConnexionShow: false,
+            modalInscriptionShow: false
         }
     }
 
-    modalConnexionClose = () =>
-    {
-        this.setState({modalConnexionShow:false});
+    modalConnexionClose = () => {
+        this.setState({ modalConnexionShow: false });
     }
 
-    modalInscriptionClose = () =>
-    {
-        this.setState({modalInscriptionShow:false, modalConnexionShow:true});
+    modalInscriptionClose = () => {
+        this.setState({ modalInscriptionShow: false, modalConnexionShow: true });
     }
 
     render() {
-        
+
         return (
             <Navbar default collapseOnSelect>
                 <Navbar.Header>
@@ -41,12 +38,12 @@ class Menu extends Component {
                     <NavItem eventKey={1} href="#">
                         <span className="btn-connexion" onClick={() => this.setState({ modalConnexionShow: true })}>CONNEXION
                         </span>
-                        <ModalConnexion show={this.state.modalConnexionShow} onHide={this.modalConnexionClose}/>
+                        <ModalConnexion show={this.state.modalConnexionShow} onHide={this.modalConnexionClose} />
                     </NavItem>
                     <NavItem eventKey={2} href="#">
                         <span className="btn-inscription" onClick={() => this.setState({ modalInscriptionShow: true })}>INSCRIPTION
                         </span>
-                        <ModalInscription show={this.state.modalInscriptionShow} onHide={this.modalInscriptionClose}/>
+                        <ModalInscription show={this.state.modalInscriptionShow} onHide={this.modalInscriptionClose} />
                     </NavItem>
                 </Nav>
             </Navbar>

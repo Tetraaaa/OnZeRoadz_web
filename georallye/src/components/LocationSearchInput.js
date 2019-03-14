@@ -1,28 +1,24 @@
 import React from 'react';
-import PlacesAutocomplete, {
-    geocodeByAddress,
-    getLatLng,
-} from 'react-places-autocomplete';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import '../styles/LocationSearchInput.css';
 
 class LocationSearchInput extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-             address: this.props.address 
-            };
+            address: this.props.address
+        };
     }
-
-
 
     handleSelect = address => {
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
             .then(latLng => {
                 let o = {
-                    lat:latLng.lat,
-                    lng:latLng.lng,
-                    address:address
+                    lat: latLng.lat,
+                    lng: latLng.lng,
+                    address: address
                 }
                 console.log(o)
                 this.props.onClick(o);

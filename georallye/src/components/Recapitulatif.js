@@ -1,10 +1,9 @@
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl, ControlLabel, Button } from 'react-bootstrap';
-import '../styles/Recapitulatif.css';
+import { Button, Col, ControlLabel, FormControl, Row } from 'react-bootstrap';
 import '../styles/Home.css';
-class Recapitulatif extends Component
-{
+import '../styles/Recapitulatif.css';
+class Recapitulatif extends Component {
 
     state = {
         lat: 0,
@@ -19,10 +18,8 @@ class Recapitulatif extends Component
     /** 
      * Position actuelle
     */
-    location = () =>
-    {
-        navigator.geolocation.getCurrentPosition((position) =>
-        {
+    location = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
             this.setState({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -31,8 +28,7 @@ class Recapitulatif extends Component
     }
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    componentDidMount()
-    {
+    componentDidMount() {
         this.location();
         this.setState({
             name: this.props.location.name,
@@ -40,8 +36,7 @@ class Recapitulatif extends Component
         })
     }
 
-    render()
-    {
+    render() {
         return (
             <div className="container-fluid">
                 <span className="titre-page">Récapitulatif du circuit</span>
@@ -117,5 +112,5 @@ class Recapitulatif extends Component
 }
 
 export default GoogleApiWrapper({
-    apiKey: ("AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+    apiKey: (URL.apiKey)
 })(Recapitulatif)

@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
-import Circuit from './Circuit';
+import React, { Component } from 'react';
+import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class ModalTransit extends Component {
@@ -49,8 +48,9 @@ class ModalTransit extends Component {
                     <Link to={{
                         pathname: "/circuit",
                         infoCircuit: [{
-                            nameCircuit: this.state.nameCircuit, 
-                            descCircuit: this.state.descCircuit }]// your data array of objects
+                            nameCircuit: this.state.nameCircuit,
+                            descCircuit: this.state.descCircuit
+                        }]
                     }}>
                         <Button variant="primary" type="button" className="btn-valid">
                             VALIDER

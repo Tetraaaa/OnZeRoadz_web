@@ -1,22 +1,18 @@
-import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 import '../App.css';
+import URL from '../resources/Url';
 import { checkStatus } from '../resources/utils';
-import URL from '../resources/Url'
 
-class TypeQuestionItem extends React.Component
-{
-    render()
-    {
+class TypeQuestionItem extends React.Component {
+    render() {
         return <option value={this.props.data.type}>{this.props.data.label}</option>
     }
 }
 
-class ModalQuestion extends Component
-{
+class ModalQuestion extends Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         this.state = {
             typeQuestion: "Free",
@@ -31,8 +27,7 @@ class ModalQuestion extends Component
     /**
     * Récupération type question
     */
-    findTypeQuestion = () =>
-    {        
+    findTypeQuestion = () => {
         return fetch(URL.typeQuestion, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -40,14 +35,13 @@ class ModalQuestion extends Component
             .then(checkStatus)
             .then((res) => res.json())
             .then(listTypeQuestion => this.setState({ listTypeQuestion: listTypeQuestion }))
-            .catch((err) => console.error(err));            
+            .catch((err) => console.error(err));
     }
 
     /**
      * Envoie infos au component Circuit
      */
-    sendInfoQuestion = () =>
-    {
+    sendInfoQuestion = () => {
         let question = {
             points: this.state.nbPoint,
             text: this.state.question,
@@ -56,10 +50,10 @@ class ModalQuestion extends Component
             params: {
                 response: this.state.reponse
             }
-            
+
         }
         this.setState({
-            typeQuestion: this.state.listTypeQuestion.length > 0 ? this.state.listTypeQuestion[0].type: "",
+            typeQuestion: this.state.listTypeQuestion.length > 0 ? this.state.listTypeQuestion[0].type : "",
             nbPoint: 0,
             question: "",
             infos: "",
@@ -69,15 +63,13 @@ class ModalQuestion extends Component
         this.props.onHide();
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
         this.findTypeQuestion();
     }
 
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    render()
-    {
+    render() {
         return (
             <Modal show={this.props.show}>
                 <Modal.Header closeButton onClick={this.props.onHide}>

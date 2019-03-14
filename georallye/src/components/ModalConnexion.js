@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Modal, Form, Button, FormControl, FormGroup } from 'react-bootstrap';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Button, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 import { withAuth } from './AuthContext';
 
 class ModalConnexion extends Component

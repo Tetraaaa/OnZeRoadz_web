@@ -1,20 +1,18 @@
-import React, { Component } from 'react'
-import { Map, Marker, GoogleApiWrapper, Polyline} from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
+import React, { Component } from 'react';
+import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import Sidebar from "react-sidebar";
 import '../App.css';
+import URL from '../resources/Url';
+import { checkStatus } from '../resources/utils';
 import '../styles/Circuit.css';
+import LocationSearchInput from './LocationSearchInput';
 import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
-import Sidebar from "react-sidebar";
-import { Link } from 'react-router-dom';
-import { Form, Button, FormControl, ControlLabel, FormGroup } from 'react-bootstrap';
-import { checkStatus } from '../resources/utils';
-import URL from '../resources/Url';
-import LocationSearchInput from './LocationSearchInput';
 
-class Circuit extends Component
-{
-    constructor(props)
-    {
+class Circuit extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             name: "",
@@ -22,8 +20,8 @@ class Circuit extends Component
             geoLoc: false,
             lat: 0,
             lng: 0,
-            userLat:0,
-            userLng:0,
+            userLat: 0,
+            userLng: 0,
             marker: null,
             sidebarOpen: false,
             typeSideBar: '',
@@ -41,7 +39,7 @@ class Circuit extends Component
             transits: [],
             currentId: 0,
             validationType: false,
-            loaded:false
+            loaded: false
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -51,10 +49,8 @@ class Circuit extends Component
     /** 
      * Position actuelle
     */
-    location = () =>
-    {
-        navigator.geolocation.getCurrentPosition((position) =>
-        {
+    location = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
             this.setState({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
@@ -67,10 +63,8 @@ class Circuit extends Component
     /**
      * Positionner le marker
      */
-    mapClicked = (mapProps, map, clickEvent) =>
-    {
-        if (this.state.addMarkerActive && !this.state.sidebarOpen)
-        {
+    mapClicked = (mapProps, map, clickEvent) => {
+        if (this.state.addMarkerActive && !this.state.sidebarOpen) {
             let marker = {
                 id: this.state.id,
                 lat: Number(clickEvent.latLng.lat()),
@@ -101,12 +95,10 @@ class Circuit extends Component
                 })
             });
         }
-        else
-        {
+        else {
             this.setState({ sidebarOpen: false })
             let item = this.state.transits.find(item => item.id === this.state.currentId)
-            if (item)
-            {
+            if (item) {
                 let newState = this.state.transits.filter(i => i.id !== item.id);
                 newState = newState.concat({
                     id: item.id,
@@ -117,7 +109,7 @@ class Circuit extends Component
                         longitude: this.state.lng,
                         geoLoc: false,
                         description: this.state.description,
-                        questions:item.step.questions
+                        questions: item.step.questions
                     },
                     description: item.description
                 })
@@ -129,53 +121,9 @@ class Circuit extends Component
     }
 
     /**
-     * Recherche le lieu de la barre de recherche
-     */
-    _onSearch = (item) =>
-    {
-        fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
-            item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response =>
-            {
-                if (response.ok)
-                {
-                    response.json().then(json => this.setState(
-                        {
-                            lat: json.result.geometry.location.lat,
-                            lng: json.result.geometry.location.lng,
-                            lieu: item.description,
-                            focusOnBar: false
-                        }
-                    ))
-                }
-            })
-            .catch(error => console.log(error))
-    }
-
-    /**
-     * Affiche la liste de suggestion de la barre de recherche
-     */
-    _onChangeText = (e) =>
-    {
-        if (e.target.value.length > 2)
-        {
-            fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
-                e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response =>
-                {
-                    if (response.ok)
-                    {
-                        response.json().then(json => this.setState({ predictions: json.predictions }))
-                    }
-                })
-                .catch(error => console.log(error))
-        }
-        this.handleInputChange(e);
-    }
-
-    /**
      * Ouverture de la SideBar
      */
-    onSetSidebarOpen()
-    {
+    onSetSidebarOpen() {
         if (this.state.sidebarOpen === false)
             this.setState({ sidebarOpen: true })
         else
@@ -186,21 +134,17 @@ class Circuit extends Component
     /**
      * SideBar Add
      */
-    onClickAdd = () =>
-    {
+    onClickAdd = () => {
         this.setState({ addMarkerActive: !this.state.addMarkerActive, sidebarOpen: false })
     }
 
     /**
      * SideBar Add
      */
-    onClickMarker = (marker) =>
-    {
-        if(this.state.sidebarOpen)
-        {
+    onClickMarker = (marker) => {
+        if (this.state.sidebarOpen) {
             let item = this.state.transits.find(item => item.id === this.state.currentId)
-            if (item)
-            {
+            if (item) {
                 let newState = this.state.transits.filter(i => i.id !== item.id);
                 newState = newState.concat({
                     id: item.id,
@@ -211,7 +155,7 @@ class Circuit extends Component
                         longitude: this.state.lng,
                         geoLoc: false,
                         description: this.state.description,
-                        questions:item.step.questions
+                        questions: item.step.questions
                     },
                     description: item.description
                 })
@@ -223,8 +167,7 @@ class Circuit extends Component
                 })
             }
         }
-        else
-        {
+        else {
             let item = this.state.transits.find(item => item.id === marker.id);
             this.onSetSidebarOpen();
             this.setState({ typeSideBar: 'marker', currentId: item.id, name: item.step.name, description: item.step.description })
@@ -235,8 +178,7 @@ class Circuit extends Component
     /**
      * SideBar List
      */
-    onClickList = () =>
-    {
+    onClickList = () => {
         this.onSetSidebarOpen();
         this.setState({ typeSideBar: 'list' })
     }
@@ -244,10 +186,8 @@ class Circuit extends Component
     /**
      * Marker onDragend
      */
-    onMarkerDragEnd = (coord, index) =>
-    {
-        this.setState(prevState =>
-        {
+    onMarkerDragEnd = (coord, index) => {
+        this.setState(prevState => {
             const markers = [...this.state.markers];
             markers[index] = { ...markers[index], lat: coord.latLng.lat(), lng: coord.latLng.lng() };
             return { markers };
@@ -257,12 +197,10 @@ class Circuit extends Component
     /**
      * Récupération données modal Question
      */
-    myCallbackQuestion = (dataFromQuestion) =>
-    {
+    myCallbackQuestion = (dataFromQuestion) => {
         let transit = this.state.transits.find(item => item.id === this.state.currentId)
         let step = transit.step;
-        if (step)
-        {
+        if (step) {
             step.questions = step.questions.concat(dataFromQuestion);
             let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
             newState = newState.concat(transit)
@@ -273,11 +211,9 @@ class Circuit extends Component
     /**
      * Récupération données modal Transit
      */
-    myCallbackTransit = (dataFromTransit) =>
-    {
+    myCallbackTransit = (dataFromTransit) => {
         let transit = this.state.transits.find(item => item.id === this.state.currentId);
-        if (transit)
-        {
+        if (transit) {
             transit.description = dataFromTransit.description;
             transit.transitType = 1;
 
@@ -290,8 +226,7 @@ class Circuit extends Component
     /**
      * Requête POST pour la création de circuit
      */
-    createCircuit = (infos) =>
-    {
+    createCircuit = (infos) => {
         let details = {
             "name": infos.name,
             "description": infos.description,
@@ -326,14 +261,12 @@ class Circuit extends Component
         this.setState({ lieu });
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
         this.location();
-        this.setState({loaded:true})
+        this.setState({ loaded: true })
     }
 
-    render()
-    {
+    render() {
         let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
         let modalTransitClose = () => this.setState({ modalTransitShow: false });
         return (
@@ -416,8 +349,7 @@ class Circuit extends Component
                                         onChange={this.handleInputChange} />
                                 </FormGroup>
                                 {this.state.transits.length > 0 ?
-                                    this.state.transits.map((item, index) =>
-                                    {
+                                    this.state.transits.map((item, index) => {
                                         let t = item.step.name || "(Pas de nom)"
                                         return (
                                             <div key={index}>{" - " + t} </div>
@@ -438,7 +370,7 @@ class Circuit extends Component
                     pullRight
                 >
                     <div className="div-search-bar">
-                    <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }}/>
+                        <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }} />
                     </div>
 
                     <Button className={this.state.addMarkerActive ? "btn-add-active" : "btn-add"} onClick={this.onClickAdd}>
@@ -448,7 +380,7 @@ class Circuit extends Component
                         <i className="material-icons">list</i>
                     </Button>
                     {
-                        this.state.loaded && this.state.transits.length > 0?
+                        this.state.loaded && this.state.transits.length > 0 ?
                             <Link to={{
                                 pathname: "/recapitulatif",
                                 name: this.props.location.infoCircuit[0].nameCircuit,
@@ -477,8 +409,7 @@ class Circuit extends Component
                             scaledSize: new this.props.google.maps.Size(30, 30)
                         }} />
                         {
-                            this.state.markers.map((marker, index) =>
-                            {
+                            this.state.markers.map((marker, index) => {
                                 return (
                                     <Marker draggable={true}
                                         label={marker.id.toString()}
@@ -509,5 +440,5 @@ class Circuit extends Component
 }
 
 export default GoogleApiWrapper({
-    apiKey: ("AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+    apiKey: (URL.apiKey)
 })(Circuit)

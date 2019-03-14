@@ -1,12 +1,12 @@
+import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, Button } from 'react-bootstrap';
-import ModalCircuit from './ModalCircuit';
-import '../styles/Home.css';
+import { Button, Col, Row } from 'react-bootstrap';
 import '../App.css';
-import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
+import { checkStatus } from '../resources/utils';
+import '../styles/Home.css';
 import LocationSearchInput from './LocationSearchInput';
+import ModalCircuit from './ModalCircuit';
 
 class Space extends Component {
     state = {
@@ -34,7 +34,7 @@ class Space extends Component {
         })
     }
 
-    mapClicked = (mapProps, map, clickEvent) => {        
+    mapClicked = (mapProps, map, clickEvent) => {
         this.setState({
             markers: {
                 lat: clickEvent.latLng.lat(),
@@ -45,36 +45,6 @@ class Space extends Component {
         })
     }
 
-    _onSearch = (item) => {
-        fetch("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" +
-            item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                if (response.ok) {
-                    response.json().then(json => this.setState(
-                        {
-                            lat: json.result.geometry.location.lat,
-                            lng: json.result.geometry.location.lng,
-                            lieu: item.description,
-                            focusOnBar: false
-                        }
-                    ))
-                }
-            })
-            .catch(error => console.log(error))
-    }
-
-    _onChangeText = (e) => {
-        if (e.target.value.length > 2) {
-            fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" +
-                e.target.value + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk").then(response => {
-                    if (response.ok) {
-                        response.json().then(json => this.setState({ predictions: json.predictions }))
-                    }
-                })
-                .catch(error => console.log(error))
-        }
-        this.handleInputChange(e);
-    }
-
     /**
      * Récupération des circuits publiés
      */
@@ -83,10 +53,10 @@ class Space extends Component {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
-        .then(checkStatus)
-        .then((res) => res.json())
-        .then(listCircuits => this.setState({ listCircuits: listCircuits }))
-        .catch((err) => console.error(err));
+            .then(checkStatus)
+            .then((res) => res.json())
+            .then(listCircuits => this.setState({ listCircuits: listCircuits }))
+            .catch((err) => console.error(err));
     }
 
     centerMap = (data) => {
@@ -96,7 +66,7 @@ class Space extends Component {
             lieu: data.address
         })
     }
-    
+
     handleChange = lieu => {
         this.setState({ lieu });
     }
@@ -107,14 +77,14 @@ class Space extends Component {
     }
 
     render() {
-        let modalCircuitClose = () => this.setState({ modalCircuitShow: false });        
+        let modalCircuitClose = () => this.setState({ modalCircuitShow: false });
         return (
             <div className="container-fluid">
                 <Row>
                     <Col xs={7}>
                         <Row>
                             <Col xs={7}>
-                                <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }}/>
+                                <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }} />
                             </Col>
                             <Col xs={5}>
                                 <Button className="btn-filtrer"><i className="material-icons">tune</i><span>Filtrer la recherche</span></Button>
@@ -135,7 +105,7 @@ class Space extends Component {
                                     {
                                         this.state.listCircuits.map((circuit) => {
                                             return (
-                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                                <Marker key={circuit.id} position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }} />
                                             )
                                         })
                                     }
@@ -170,5 +140,5 @@ class Space extends Component {
 
 
 export default GoogleApiWrapper({
-    apiKey: ("AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+    apiKey: (URL.apiKey)
 })(Space)

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
-import '../styles/MenuCo.css';
 import '../App.css';
-
+import '../styles/MenuCo.css';
 import { withAuth } from './AuthContext';
+
 
 class MenuCo extends Component {
 
@@ -13,9 +13,9 @@ class MenuCo extends Component {
     */
 	signout = () => {
 		this.props.auth.signout()
-		.then(() => {
-			this.props.history.push('/');
-		});
+			.then(() => {
+				this.props.history.push('/');
+			});
 	};
 
 	render() {
@@ -43,7 +43,7 @@ class MenuCo extends Component {
 						<NavItem className="btn-power" eventKey={3} href="#">
 							<Navbar.Text>
 								<span style={{ marginRight: 5 }}>
-									{ this.props.auth.username }
+									{this.props.auth.username}
 								</span>
 								<i className="material-icons">person</i>
 							</Navbar.Text>
