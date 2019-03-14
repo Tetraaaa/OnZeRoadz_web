@@ -13,6 +13,6 @@
 
 .liste-container{
     height: 420px;
-    border: 1px solid black;
     margin : 0px 5px 0px 5px;
+    padding: 10px;
 }

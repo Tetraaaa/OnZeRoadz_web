@@ -39,13 +39,13 @@ class Menu extends Component {
                 </Navbar.Header>
                 <Nav pullRight>
                     <NavItem eventKey={1} href="#">
-                        <a className="btn-connexion" onClick={() => this.setState({ modalConnexionShow: true })}>CONNEXION
-                        </a>
+                        <span className="btn-connexion" onClick={() => this.setState({ modalConnexionShow: true })}>CONNEXION
+                        </span>
                         <ModalConnexion show={this.state.modalConnexionShow} onHide={this.modalConnexionClose}/>
                     </NavItem>
                     <NavItem eventKey={2} href="#">
-                        <a className="btn-inscription" onClick={() => this.setState({ modalInscriptionShow: true })}>INSCRIPTION
-                        </a>
+                        <span className="btn-inscription" onClick={() => this.setState({ modalInscriptionShow: true })}>INSCRIPTION
+                        </span>
                         <ModalInscription show={this.state.modalInscriptionShow} onHide={this.modalInscriptionClose}/>
                     </NavItem>
                 </Nav>

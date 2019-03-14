@@ -12,6 +12,8 @@ class Space extends Component {
     state = {
         lat: 0,
         lng: 0,
+        userLat: 0,
+        userLng: 0,
         markers: null,
         predictions: [],
         lieu: '',
@@ -24,18 +26,22 @@ class Space extends Component {
     location = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             this.setState({
+                userLat: position.coords.latitude,
+                userLng: position.coords.longitude,
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
         })
     }
 
-    mapClicked = (mapProps, map, clickEvent) => {
+    mapClicked = (mapProps, map, clickEvent) => {        
         this.setState({
             markers: {
                 lat: clickEvent.latLng.lat(),
                 lng: clickEvent.latLng.lng()
-            }
+            },
+            lng: clickEvent.latLng.lng(),
+            lat: clickEvent.latLng.lat()
         })
     }
 
@@ -101,7 +107,7 @@ class Space extends Component {
     }
 
     render() {
-        let modalCircuitClose = () => this.setState({ modalCircuitShow: false });
+        let modalCircuitClose = () => this.setState({ modalCircuitShow: false });        
         return (
             <div className="container-fluid">
                 <Row>
@@ -121,7 +127,7 @@ class Space extends Component {
                                     center={{ lat: this.state.lat, lng: this.state.lng }}
                                     zoom={14}
                                     onClick={this.mapClicked}>
-                                    <Marker position={{ lat: this.state.lat, lng: this.state.lng }}
+                                    <Marker position={{ lat: this.state.userLat, lng: this.state.userLng }}
                                         icon={{
                                             url: require("../resources/img/my_location.svg"),
                                             scaledSize: new this.props.google.maps.Size(30, 30)

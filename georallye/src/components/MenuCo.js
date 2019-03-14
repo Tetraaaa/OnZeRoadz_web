@@ -23,7 +23,7 @@ class MenuCo extends Component {
 			<Navbar default collapseOnSelect>
 				<Navbar.Header>
 					<Navbar.Brand>
-						<Link to="/"><i className="material-icons">near_me</i><span>OnZeRoadz</span></Link>
+						<Link to="/space"><i className="material-icons">near_me</i><span>OnZeRoadz</span></Link>
 					</Navbar.Brand>
 					<Navbar.Toggle />
 				</Navbar.Header>

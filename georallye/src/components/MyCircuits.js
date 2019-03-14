@@ -32,6 +32,7 @@ class MyCircuits extends Component {
         return fetch(URL.myCircuits, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
         })
             .then(checkStatus)
             .then((res) => res.json())
@@ -69,7 +70,13 @@ class MyCircuits extends Component {
                             </Col>
                         </Row>
                         <Row className="liste-container">
-                            <Col>LISTE CIRCUITS</Col>
+                            {
+                                this.state.myCircuits.map((circuit) => {
+                                    return (
+                                        <div>{circuit.name} / Durée :  {circuit.duration} minutes</div>
+                                    )
+                                })
+                            }
                         </Row>
                     </Col>
 
@@ -88,7 +95,7 @@ class MyCircuits extends Component {
                                     {
                                         this.state.myCircuits.map((circuit) => {
                                             return (
-                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }} />
                                             )
                                         })
                                     }
