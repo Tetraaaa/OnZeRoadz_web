@@ -3,12 +3,6 @@ import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from 'react
 import URL from '../resources/Url';
 import { checkStatus } from '../resources/utils';
 
-class TypeTransitItem extends React.Component {
-    render() {
-        return <option value={this.props.data.id}>{this.props.data.label}</option>
-    }
-}
-
 class ModalTransit extends Component {
 
     constructor(props) {
@@ -30,7 +24,10 @@ class ModalTransit extends Component {
         })
             .then(checkStatus)
             .then((res) => res.json())
-            .then(listTypeTransit => this.setState({ listTypeTransit: listTypeTransit }))
+            .then(listTypeTransit => this.setState({ 
+                listTypeTransit: listTypeTransit,
+                typeTransit : listTypeTransit[0].id
+            }))
             .catch((err) => console.error(err));
     }
 
@@ -55,6 +52,7 @@ class ModalTransit extends Component {
     handleInputChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
     render() {
+        console.log(this.state)
         return (
             <Modal show={this.props.show}>
                 <Modal.Header closeButton onClick={this.props.onHide}>
@@ -70,8 +68,9 @@ class ModalTransit extends Component {
                                 value={this.state.typeTransit}
                                 onChange={this.handleInputChange}
                                 className="select-type-transit" >
-                                {this.state.listTypeTransit.map((typeTransit) =>
-                                    <TypeTransitItem key={typeTransit.id} data={typeTransit} />)
+                                {this.state.listTypeTransit.map((typeTransit) => {
+                                    return <option value={typeTransit.id}>{typeTransit.label}</option>
+                                    })
                                 }
                             </FormControl>
                         </FormGroup>

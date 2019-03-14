@@ -18,17 +18,17 @@ export default URL = {
     areaCircuits : circuit + "/published/area",
     myCircuits : circuit + "/my",
 
-    step : circuit + "/step",   
+    step : domain + "step",   
     
-    updateTransit : circuit + "/transit/",
-    typeTransit : transit + "/type",
+    updateTransit : transit,
+    typeTransit : transit + "type",
 
-    addQcm : circuit + "/step/qcm",
-    addFree : circuit + "/step/free",
-    updateQcm : circuit + "/step/qcm/",
-    updateFree : circuit + "/step/free/",
-    deleteQuestion : circuit + "/step/question/",
-    typeQuestion : question + "/type",
+    addQcm : question + "qcm",
+    addFree : question + "free",
+    updateQcm : question + "qcm/",
+    updateFree : question + "free/",
+    deleteQuestion : question + "question/",
+    typeQuestion : question + "type",
     
     googlePlaces : "https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
     googleAutocompletion : "https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=",

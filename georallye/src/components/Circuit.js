@@ -7,17 +7,15 @@ import '../App.css';
 import URL from '../resources/Url';
 import { checkStatus } from '../resources/utils';
 import '../styles/Circuit.css';
+import Step from "./Step"
 import LocationSearchInput from './LocationSearchInput';
-import ModalQuestion from './ModalQuestion';
 import ModalTransit from './ModalTransit';
+import StepItem from './StepItem';
 
 class Circuit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            description: "",
-            geoLoc: false,
             lat: 0,
             lng: 0,
             userLat: 0,
@@ -26,10 +24,7 @@ class Circuit extends Component {
             sidebarOpen: false,
             typeSideBar: '',
             markers: [],
-            predictions: [],
             lieu: '',
-            focusOnBar: false,
-            modalQuestionShow: false,
             id: 1,
             addMarkerActive: false,
             circuitDuration: 0,
@@ -39,7 +34,8 @@ class Circuit extends Component {
             transits: [],
             currentId: 0,
             validationType: false,
-            loaded: false
+            loaded: false,
+            modalTransitShow: false
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -71,53 +67,35 @@ class Circuit extends Component {
                 lng: Number(clickEvent.latLng.lng())
             }
             this.setState({
-                lat: Number(clickEvent.latLng.lat()),
-                lng: Number(clickEvent.latLng.lng()),
-                currentId: 0,
-                sidebarOpen: false,
-                name: "",
                 id: this.state.id + 1,
                 marker: marker,
                 markers: this.state.markers.concat(marker),
-                transits: this.state.transits.concat({
-                    id: marker.id,
-                    description: "",
-                    transitType: 1,
-                    step: {
-                        name: "",
-                        latitude: marker.lat,
-                        longitude: marker.lng,
-                        geoLoc: false,
-                        description: "",
-                        questions: []
-                    }
-
-                })
-            });
+                modalTransitShow: true
+            })
         }
-        else {
-            this.setState({ sidebarOpen: false })
-            let item = this.state.transits.find(item => item.id === this.state.currentId)
-            if (item) {
-                let newState = this.state.transits.filter(i => i.id !== item.id);
-                newState = newState.concat({
-                    id: item.id,
-                    transitType: item.transitType,
-                    step: {
-                        name: this.state.name,
-                        latitude: this.state.lat,
-                        longitude: this.state.lng,
-                        geoLoc: false,
-                        description: this.state.description,
-                        questions: item.step.questions
-                    },
-                    description: item.description
-                })
-                this.setState({
-                    transits: newState
-                })
-            }
-        }
+        // else {
+        //     this.setState({ sidebarOpen: false })
+        //     let item = this.state.transits.find(item => item.id === this.state.currentId)
+        //     if (item) {
+        //         let newState = this.state.transits.filter(i => i.id !== item.id);
+        //         newState = newState.concat({
+        //             id: item.id,
+        //             transitType: item.transitType,
+        //             step: {
+        //                 name: this.state.name,
+        //                 latitude: this.state.lat,
+        //                 longitude: this.state.lng,
+        //                 geoLoc: false,
+        //                 description: this.state.description,
+        //                 questions: item.step.questions
+        //             },
+        //             description: item.description
+        //         })
+        //         this.setState({
+        //             transits: newState
+        //         })
+        //     }
+        // }
     }
 
     /**
@@ -211,16 +189,36 @@ class Circuit extends Component {
     /**
      * Récupération données modal Transit
      */
-    myCallbackTransit = (dataFromTransit) => {
-        let transit = this.state.transits.find(item => item.id === this.state.currentId);
-        if (transit) {
-            transit.description = dataFromTransit.description;
-            transit.transitType = 1;
-
-            let newState = this.state.transits.filter(item => item.id !== this.state.currentId);
-            newState = newState.concat(transit)
-            this.setState({ transits: newState })
+    myCallbackTransit = (data) => {
+        let body = {
+            longitude: this.state.lng,
+            latitude: this.state.lat,
+            circuitId: this.props.location.circuitId,
+            typeTransit: data.transitType,
+            descriptionTransit: data.description
         }
+        fetch(URL.step, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+            .then(checkStatus)
+            .then((res) => res.json())
+            .then((json) => {
+                let transit = {
+                    stepId: json.stepId,
+                    transitId: json.transitId,
+                    longitude: this.state.lng,
+                    latitude: this.state.lat,
+                    marker: this.state.marker
+                }
+                let transits = this.state.transits.concat(transit)
+                this.setState({
+                    transits,
+                    transit
+                })
+            })
+            .catch((err) => console.error(err));
     }
 
     /**
@@ -267,75 +265,18 @@ class Circuit extends Component {
     }
 
     render() {
-        let modalQuestionClose = () => this.setState({ modalQuestionShow: false });
         let modalTransitClose = () => this.setState({ modalTransitShow: false });
         return (
             <div className="container-fluid-circuit">
+                <ModalTransit
+                    show={this.state.modalTransitShow}
+                    onHide={modalTransitClose}
+                    callbackFromParent={this.myCallbackTransit}
+                />
                 <Sidebar
                     sidebar={
                         this.state.typeSideBar === 'marker' ?
-                            <Form>
-                                <ControlLabel className="title-step">{this.state.currentId}</ControlLabel>
-                                <FormControl
-                                    className="name-step"
-                                    type="text"
-                                    name="name"
-                                    placeholder="Nom de l'étape"
-                                    value={this.state.name}
-                                    onChange={this.handleInputChange} />
-                                <FormControl
-                                    componentClass="textarea"
-                                    rows="6"
-                                    className="info-step"
-                                    name="description"
-                                    placeholder="Description de l'étape"
-                                    value={this.state.description}
-                                    onChange={this.handleInputChange}
-                                />
-                                <ControlLabel className="lbl-radio-title">
-                                    Mode de validation de l'arrivée à l'étape &nbsp;
-                                    <i className="material-icons">info</i>
-                                </ControlLabel>
-                                <ControlLabel className="lbl-radio" name="validationType">
-                                    <input
-                                        type="radio"
-                                        value={this.state.validationType}
-                                        name="validationType"
-                                        id="formStepValid"
-                                        onChange={this.handleInputChange}
-                                    />
-                                    Automatique
-                                </ControlLabel>
-                                <ControlLabel className="lbl-radio">
-                                    <input
-                                        type="radio"
-                                        value={this.state.validationType}
-                                        name="validationType"
-                                        id="formStepValid"
-                                        onChange={this.handleInputChange}
-                                    />
-                                    Manuelle
-                                </ControlLabel>
-                                {/**TODO :si déjà une question mettre "afficher la question" */}
-                                <Button className="btn-question"
-                                    onClick={() => this.setState({ modalQuestionShow: true })}>
-                                    QUESTION
-                                </Button>
-                                <Button className="btn-question"
-                                    onClick={() => this.setState({ modalTransitShow: true })}>
-                                    TRAJET
-                                </Button>
-                                <ModalQuestion
-                                    show={this.state.modalQuestionShow}
-                                    onHide={modalQuestionClose}
-                                    callbackFromParent={this.myCallbackQuestion}
-                                />
-                                <ModalTransit
-                                    show={this.state.modalTransitShow}
-                                    onHide={modalTransitClose}
-                                    callbackFromParent={this.myCallbackTransit}
-                                />
-                            </Form>
+                            <Step transit={this.state.transit} />
                             :
                             <Form>
                                 <ControlLabel className="title-step">Ma liste d'étapes</ControlLabel>
@@ -349,10 +290,9 @@ class Circuit extends Component {
                                         onChange={this.handleInputChange} />
                                 </FormGroup>
                                 {this.state.transits.length > 0 ?
-                                    this.state.transits.map((item, index) => {
-                                        let t = item.step.name || "(Pas de nom)"
+                                    this.state.transits.map((item) => {
                                         return (
-                                            <div key={index}>{" - " + t} </div>
+                                            <StepItem key={item.stepId} stepId={item.stepId}/>
                                         )
                                     }
                                     )
@@ -383,9 +323,7 @@ class Circuit extends Component {
                         this.state.loaded && this.state.transits.length > 0 ?
                             <Link to={{
                                 pathname: "/recapitulatif",
-                                name: this.props.location.infoCircuit[0].nameCircuit,
-                                description: this.props.location.infoCircuit[0].descCircuit,
-                                validate: this.createCircuit
+                                circuitId : this.props.location.circuitId
                             }}>
                                 <Button className="btn-check">
                                     <i className="material-icons">check</i>
