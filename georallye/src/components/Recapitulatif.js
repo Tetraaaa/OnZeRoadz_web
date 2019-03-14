@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl, ControlLabel, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Row, Col, FormControl, ControlLabel } from 'react-bootstrap';
 import '../styles/Recapitulatif.css';
 import '../styles/Home.css';
 class Recapitulatif extends Component {

@@ -1,0 +1,17 @@
+.location-search-input{
+    outline: none;
+    width: 440px;
+    height: 35px;
+    padding: 0px 40px 0px 10px;
+    background-image: url('../resources/img/baseline_search_black_18dp.png');
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-size: 30px;
+    border-radius: 20px;
+}
+
+.autocomplete-dropdown-container{
+    width: 440px;
+    z-index: 100;
+    position: absolute;
+}

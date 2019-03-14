@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, Marker, GoogleApiWrapper, Polyline, InfoWindow } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper, Polyline} from 'google-maps-react';
 import '../App.css';
 import '../styles/Circuit.css';
 import ModalQuestion from './ModalQuestion';
@@ -8,7 +8,7 @@ import Sidebar from "react-sidebar";
 import { Form, Button, FormControl, ListGroup, ListGroupItem, ControlLabel, FormGroup } from 'react-bootstrap';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
-
+import LocationSearchInput from './LocationSearchInput';
 
 class Circuit extends Component {
     constructor(props) {
@@ -32,10 +32,7 @@ class Circuit extends Component {
             question: null,
             questions: [],
             transit: null,
-            transits: [],
-
-
-
+            transits: []
         };
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
@@ -68,10 +65,10 @@ class Circuit extends Component {
             id: this.state.id + 1,
             marker: marker,
             markers: this.state.markers.concat(marker),
-            transits:this.state.transits.concat({
-                description:"",
-                transitType:"",
-                step:{
+            transits: this.state.transits.concat({
+                description: "",
+                transitType: "",
+                step: {
                     name: "",
                     latitude: marker.lat,
                     longitude: marker.lng,
@@ -196,9 +193,9 @@ class Circuit extends Component {
             headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
             body: JSON.stringify(credentials)
         })
-        .then(checkStatus)
-        .then((res) => { return res })
-        .catch((err) => console.error(err));
+            .then(checkStatus)
+            .then((res) => { return res })
+            .catch((err) => console.error(err));
     }
 
     /**
@@ -216,6 +213,17 @@ class Circuit extends Component {
         })
     }
 
+    centerMap = (data) => {
+        this.setState({
+            lat: data.lat,
+            lng: data.lng,
+            lieu: data.address
+        })
+    }
+
+    handleChange = lieu => {
+        this.setState({ lieu });
+    }
 
     componentDidMount() {
         this.location();
@@ -318,34 +326,7 @@ class Circuit extends Component {
                     pullRight
                 >
                     <div className="div-search-bar">
-                        <FormControl
-                            className="input-lieu search-bar"
-                            type="text"
-                            name="lieu"
-                            value={this.state.lieu}
-                            placeholder="Rechercher un lieu"
-                            autoComplete="off"
-                            onChange={this._onChangeText}
-                            onBlur={() => { this.setState({ focusOnBar: false }) }}
-                            onFocus={() => { this.setState({ focusOnBar: true }) }} />
-                        {
-                            this.state.focusOnBar ?
-                                <ListGroup className="list-lieu-circuit">
-                                    {
-                                        this.state.predictions.map((item) => {
-                                            return (
-                                                <ListGroupItem className="lieu-item-circuit" onMouseDown={() => { this._onSearch(item) }}>
-                                                    {item.description}
-                                                </ListGroupItem>
-                                            )
-                                        }
-                                        )
-
-                                    }
-                                </ListGroup>
-                                :
-                                null
-                        }
+                    <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }}/>
                     </div>
 
                     <Button className={this.state.addMarkerActive ? "btn-add-active" : "btn-add"} onClick={this.onClickAdd}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Row, Col, FormControl } from 'react-bootstrap';
 import '../styles/MyCircuits.css';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';

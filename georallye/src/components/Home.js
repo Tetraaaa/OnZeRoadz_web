@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Row, Col, FormControl, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Row, Col, Button} from 'react-bootstrap';
 import '../styles/Home.css';
 import '../App.css';
 import { checkStatus } from '../resources/utils';
 import URL from '../resources/Url';
+import LocationSearchInput from './LocationSearchInput';
 
 class Home extends Component {
     state = {
@@ -81,6 +82,18 @@ class Home extends Component {
             .catch((err) => console.error(err));
     }
 
+    centerMap = (data) => {
+        this.setState({
+            lat: data.lat,
+            lng: data.lng,
+            lieu: data.address
+        })
+    }
+
+    handleChange = lieu => {
+        this.setState({ lieu });
+    }
+
     componentDidMount() {
         this.findPublishedCircuits()
         this.location();
@@ -93,34 +106,7 @@ class Home extends Component {
                     <Col xs={7}>
                         <Row>
                             <Col xs={7}>
-                                <FormControl
-                                    className="input-lieu"
-                                    type="text"
-                                    name="lieu"
-                                    value={this.state.lieu}
-                                    placeholder="Rechercher un lieu"
-                                    autoComplete="off"
-                                    onChange={this._onChangeText}
-                                    onBlur={() => { this.setState({ focusOnBar: false }) }}
-                                    onFocus={() => { this.setState({ focusOnBar: true }) }} />
-                                {
-                                    this.state.focusOnBar ?
-                                        <ListGroup className="list-lieu">
-                                            {
-                                                this.state.predictions.map((item) => {
-                                                    return (
-                                                        <ListGroupItem className="lieu-item" onMouseDown={() => { this._onSearch(item) }}>
-                                                            {item.description}
-                                                        </ListGroupItem>
-                                                    )
-                                                }
-                                                )
-
-                                            }
-                                        </ListGroup>
-                                        :
-                                        null
-                                }
+                                <LocationSearchInput handleChange={this.handleChange} lieu={this.state.lieu} onClick={(latLng) => { this.centerMap(latLng) }}/>
                             </Col>
                             <Col xs={5}>
                                 <Button className="btn-filtrer"><i className="material-icons">tune</i><span>Filtrer la recherche</span></Button>
@@ -140,7 +126,7 @@ class Home extends Component {
                                     {
                                         this.state.listCircuits.map((circuit) => {
                                             return (
-                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }}/>
+                                                <Marker position={{ lat: circuit.transits[0].step.latitude, lng: circuit.transits[0].step.longitude }} />
                                             )
                                         })
                                     }
